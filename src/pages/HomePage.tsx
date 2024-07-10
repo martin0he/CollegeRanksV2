@@ -39,6 +39,8 @@ const HomePage = () => {
             ],
             autoStart: true,
             loop: true,
+            delay: 75,
+            pauseFor: 2200,
           }}
         />
       </Typography>
@@ -53,6 +55,8 @@ const HomePage = () => {
             borderRadius: "35px",
             backgroundColor: "#F9F4F4",
             height: "45px",
+            border: "none",
+            boxShadow: "-1px 2px 1px #7a7171",
           },
         }}
       />
