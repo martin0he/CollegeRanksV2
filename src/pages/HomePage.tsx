@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import Typewriter from "typewriter-effect";
 import useWindowDimensions from "../useWindowDimensions";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 const HomePage = () => {
   const { width } = useWindowDimensions();
@@ -58,39 +59,51 @@ const HomePage = () => {
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row", // Change to column for vertical stacking
-          justifyContent: "center", // Align items to the bottom
-          alignItems: "center", // Center items horizontally
-          gap: "40px", // Gap between items
-          position: "fixed", // Fixed position to stay at the bottom
-          bottom: 0, // Start at the very bottom
-          left: 0,
-          right: 0, // Stretch across the screen to center content
+          justifyContent: "center",
+          position: "fixed",
+          bottom: 0,
+          width: "100%",
+          gap: "20px",
         }}
       >
         <Accordion
           sx={{
             backgroundColor: "#F1E0E0",
-            borderRadius: "15px 15px 0 0",
-            width: "auto", // Adjust width as needed
+            borderRadius: "15px 15px 0px 0px", // Rounded corners for all states
+            width: "350px",
           }}
         >
-          <AccordionSummary>
+          <AccordionSummary
+            expandIcon={<ExpandLessIcon />} // Assuming you're using an expand icon
+          >
             <Typography>How does CollegeRanks work?</Typography>
           </AccordionSummary>
-          <AccordionDetails></AccordionDetails>
+          <AccordionDetails>
+            <Typography>
+              Here, you can view the average metric ratings for your
+              institution, look at the leaderboard accompanied by filters, and
+              review your own school to help others obtain an accurate
+              representation.
+            </Typography>
+          </AccordionDetails>
         </Accordion>
         <Accordion
           sx={{
             backgroundColor: "#F1E0E0",
-            borderRadius: "15px 15px 0 0",
-            width: "auto", // Adjust width as needed
+            borderRadius: "15px 15px 0px 0px", // Consistent rounded corners
+            width: "350px",
           }}
         >
-          <AccordionSummary>
+          <AccordionSummary expandIcon={<ExpandLessIcon />}>
             <Typography>Do I need an account?</Typography>
           </AccordionSummary>
-          <AccordionDetails></AccordionDetails>
+          <AccordionDetails>
+            <Typography>
+              As a guest, you can still view the rating for any school as well
+              as look at the leaderboard. To review your school, you must create
+              an account.
+            </Typography>
+          </AccordionDetails>
         </Accordion>
       </Box>
     </Box>
