@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Typewriter from "typewriter-effect";
+import Typewriter, { Options } from "typewriter-effect";
 import useWindowDimensions from "../useWindowDimensions";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
@@ -30,18 +30,20 @@ const HomePage = () => {
       </Typography>
       <Typography fontSize={32} fontWeight={500} color="secondary">
         <Typewriter
-          options={{
-            strings: [
-              "Compare Schools",
-              "Review Your School",
-              "Find Your Dream School",
-              "Look At Rankings",
-            ],
-            autoStart: true,
-            loop: true,
-            delay: 75,
-            pauseFor: 2200,
-          }}
+          options={
+            {
+              strings: [
+                "Compare Schools",
+                "Review Your School",
+                "Find Your Dream School",
+                "Look At Rankings",
+              ],
+              autoStart: true,
+              loop: true,
+              delay: 75,
+              pauseFor: 2000,
+            } as Partial<Options>
+          }
         />
       </Typography>
       <TextField
