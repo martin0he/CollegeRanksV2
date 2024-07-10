@@ -4,8 +4,8 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(29, 29, 29, 0.87);
-  background-color: #efe6e6;
+  color: #484847;
+  background-color: #f9ecec;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -19,4 +19,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+}
+
+* {
+  font-family: Jost, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
