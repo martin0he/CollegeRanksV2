@@ -40,10 +40,14 @@ const LeaderboardPage: React.FC = () => {
       .select("name, " + metric)
       .eq("countryCode", country);
 
+    if (country === CountryCodes.Global) {
+      query = supabase.from("Universities").select("name, " + metric);
+    }
+
     if (order === "Best") {
-      query = query.order(metric, { ascending: false });
-    } else {
       query = query.order(metric, { ascending: true });
+    } else {
+      query = query.order(metric, { ascending: false });
     }
 
     query = query.limit(size);
