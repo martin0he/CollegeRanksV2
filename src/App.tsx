@@ -1,11 +1,11 @@
 import { createTheme, ThemeProvider } from "@mui/material";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import DashboardPage from "./pages/DashboardPage";
 import ReviewPage from "./pages/ReviewPage";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./AuthProvider";
 import AccountPage from "./pages/AccountPage";
+import LeaderboardPage from "./pages/LeaderboardPage";
 
 const theme = createTheme({
   palette: {
@@ -43,7 +43,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route index element={<HomePage />} />
-            <Route path="/leaderboard" element={<DashboardPage />} />
+            <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/review" element={<ReviewPage />} />
             <Route path="/account" element={<AccountPage />} />
           </Routes>
