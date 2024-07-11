@@ -15,14 +15,13 @@ import {
   LinearScale,
   BarElement,
   Tooltip,
-  Title,
 } from "chart.js";
 import { useEffect, useState } from "react";
 import { CountryCodes } from "../countries";
 import { University } from "../types";
 import supabase from "../supabase";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Title);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 const LeaderboardPage: React.FC = () => {
   const [size, setSize] = useState<number>(10);
   const [metric, setMetric] = useState<string>("overallAverage");
@@ -62,8 +61,8 @@ const LeaderboardPage: React.FC = () => {
       query = supabase.from("Universities").select("name, " + metric);
     }
 
-    const ascending = order === "Best" ? true : false;
-    query = query.order(metric, { ascending }).limit(size);
+    const ascending = order === "Best";
+    query = query.order(metric, { ascending });
 
     const { data, error } = await query;
     if (error) {
@@ -87,8 +86,14 @@ const LeaderboardPage: React.FC = () => {
         ascending ? a.value - b.value : b.value - a.value
       );
 
-      const labels = universityData.map((u) => u.name);
-      const values = universityData.map((u) => u.value);
+      const boundedData = ascending
+        ? universityData.slice(universityData.length - size)
+        : universityData.slice(0, size);
+
+      console.log(boundedData);
+
+      const labels = boundedData.map((u) => u.name);
+      const values = boundedData.map((u) => u.value);
 
       setChartData({
         labels,
