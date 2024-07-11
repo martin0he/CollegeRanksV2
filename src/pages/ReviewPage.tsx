@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import supabase from "../supabase";
-import { University } from "../types";
+import { Review, University } from "../types";
 import useWindowDimensions from "../useWindowDimensions";
 import { useAuth } from "../AuthProvider";
 
@@ -71,6 +71,37 @@ const ReviewPage = () => {
 
     fetchUniversities();
   }, [inputValue]);
+
+  const handleSubmit = async () => {
+    if (!universityId) {
+      return;
+    }
+
+    const reviewToSubmit: Review = {
+      academics,
+      clubs,
+      food,
+      housing,
+      location,
+      opportunities,
+      safety,
+      social,
+      overall,
+      universityId,
+      createdAt: new Date(),
+    };
+
+    const { data, error } = await supabase
+      .from("Reviews")
+      .insert([reviewToSubmit]);
+
+    if (error) {
+      console.error("Error inserting review:", error);
+      return;
+    }
+
+    console.log("Review submitted successfully", data);
+  };
 
   return (
     <Box width="90vw" height="75vh">
@@ -358,6 +389,7 @@ const ReviewPage = () => {
             </Box>
 
             <Button
+              onClick={handleSubmit}
               disabled={!user}
               sx={{
                 marginY: "10px",
