@@ -18,7 +18,6 @@ import { useAuth } from "../AuthProvider";
 
 const ReviewPage = () => {
   const [inputValue, setInputValue] = useState("");
-  const [university, setUniversity] = useState<University | null>(null);
   const [universities, setUniversities] = useState<University[]>([]);
   const [universityId, setUniversityId] = useState<string>();
   const [academics, setAcademics] = useState<number>(50);
@@ -73,9 +72,9 @@ const ReviewPage = () => {
 
     fetchUniversities();
   }, [inputValue]);
-
   const handleSubmit = async () => {
     if (!universityId) {
+      console.error("No university ID provided");
       return;
     }
 
@@ -93,60 +92,64 @@ const ReviewPage = () => {
       createdAt: new Date(),
     };
 
-    const { data, error } = await supabase
+    const { error: insertError } = await supabase
       .from("Reviews")
       .insert([reviewToSubmit]);
 
-    if (error) {
-      console.error("Error inserting review:", error);
+    if (insertError) {
+      console.error("Error inserting review:", insertError);
       return;
     }
-    console.log("Review submitted successfully", data);
+    console.log("Review submitted successfully");
 
-    const { data: University, error: fetchError } = await supabase
+    const { data: university, error: fetchError } = await supabase
       .from("Universities")
       .select("*")
       .eq("id", universityId)
       .single();
 
-    if (fetchError) {
+    if (fetchError || !university) {
       console.error("Error fetching university:", fetchError);
       return;
     }
-    setUniversity(University as University);
 
-    const previousAcademics = university?.avgAcademics || [];
-    const previousHousing = university?.avgHousing || [];
-    const previousLocation = university?.avgLocation || [];
-    const previousClubs = university?.avgClubs || [];
-    const previousFood = university?.avgFood || [];
-    const previousSocial = university?.avgSocial || [];
-    const previousOpportunities = university?.avgOpportunities || [];
-    const previousSafety = university?.avgSafety || [];
-    const previousOverall = university?.overallAverage || [];
+    const updatedMetrics = {
+      avgAcademics: university.avgAcademics
+        ? [...university.avgAcademics, academics]
+        : [academics],
+      avgHousing: university.avgHousing
+        ? [...university.avgHousing, housing]
+        : [housing],
+      avgLocation: university.avgLocation
+        ? [...university.avgLocation, location]
+        : [location],
+      avgClubs: university.avgClubs ? [...university.avgClubs, clubs] : [clubs],
+      avgFood: university.avgFood ? [...university.avgFood, food] : [food],
+      avgSocial: university.avgSocial
+        ? [...university.avgSocial, social]
+        : [social],
+      avgOpportunities: university.avgOpportunities
+        ? [...university.avgOpportunities, opportunities]
+        : [opportunities],
+      avgSafety: university.avgSafety
+        ? [...university.avgSafety, safety]
+        : [safety],
+      overallAverage: university.overallAverage
+        ? [...university.overallAverage, overall]
+        : [overall],
+    };
 
-    const { data: updatedUniversity, error: updateError } = await supabase
+    const { error: updateError } = await supabase
       .from("Universities")
-      .update({
-        avgAcademics: [...previousAcademics, academics],
-        avgHousing: [...previousHousing, housing],
-        avgLocation: [...previousLocation, location],
-        avgClubs: [...previousClubs, clubs],
-        avgFood: [...previousFood, food],
-        avgSocial: [...previousSocial, social],
-        avgOpportunities: [...previousOpportunities, opportunities],
-        avgSafety: [...previousSafety, safety],
-        overallAverage: [...previousOverall, overall],
-      })
-      .eq("id", universityId)
-      .select();
+      .update(updatedMetrics)
+      .eq("id", universityId);
 
     if (updateError) {
       console.error("Error updating university:", updateError);
       return;
     }
 
-    console.log("Review submitted successfully", updatedUniversity);
+    console.log("University updated successfully");
   };
 
   return (
