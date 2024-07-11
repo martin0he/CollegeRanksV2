@@ -84,7 +84,7 @@ const Navbar = () => {
       ) : (
         <Box
           height="70px"
-          marginTop="20px"
+          paddingTop="20px"
           display="flex"
           justifyContent="center"
           alignItems="center"
@@ -94,6 +94,7 @@ const Navbar = () => {
             top: 0,
             left: 0,
             zIndex: 3,
+            backgroundColor: theme.palette.background.default,
           }}
         >
           <Link

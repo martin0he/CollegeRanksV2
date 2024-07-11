@@ -1,9 +1,9 @@
 import {
   FormControl,
   Grid,
-  InputLabel,
   MenuItem,
   Select,
+  Typography,
   useTheme,
 } from "@mui/material";
 import { ChartData, ChartOptions } from "chart.js";
@@ -70,7 +70,11 @@ const LeaderboardPage = () => {
         md={9}
         sm={12}
         xs={12}
-        style={{ height: "80%", padding: "10px", margin: "30px" }}
+        display="flex"
+        justifyContent="start"
+        alignItems="center"
+        flexDirection="column"
+        style={{ height: "80%", padding: "10px", marginTop: "30px" }}
       >
         <Bar data={data} options={options} />
       </Grid>
@@ -83,16 +87,36 @@ const LeaderboardPage = () => {
           padding: "10px",
           margin: "30px 10px",
         }}
+        display="flex"
+        justifyContent="start"
+        alignItems="center"
+        flexDirection="column"
       >
-        <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">No. Schools</InputLabel>
+        <FormControl
+          sx={{
+            marginTop: "10px",
+            width: { md: "100%", sm: "80%", xs: "65%" },
+          }}
+        >
+          <Typography>No. Schools:</Typography>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={size}
-            label="No. Schools"
             onChange={(e) => setSize(e.target.value as number)}
-            sx={{ backgroundColor: "#F9F4F4" }}
+            sx={{
+              borderRadius: "10px 10px 3px 3px",
+              backgroundColor: "#F9F4F4",
+              height: "45px",
+              border: "none",
+              boxShadow: "-1px 1px 2px #7a7171",
+              "& .MuiSelect-select": {
+                py: "10px",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                border: "none",
+              },
+            }}
           >
             <MenuItem value={5}>5</MenuItem>
             <MenuItem value={10}>10</MenuItem>
@@ -101,15 +125,32 @@ const LeaderboardPage = () => {
           </Select>
         </FormControl>
 
-        <FormControl fullWidth sx={{ marginTop: "10px" }}>
-          <InputLabel id="demo-simple-select-label">Metric</InputLabel>
+        <FormControl
+          sx={{
+            marginTop: "10px",
+            width: { md: "100%", sm: "80%", xs: "65%" },
+          }}
+        >
+          <Typography>Metric:</Typography>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={metric}
             label="Metric"
             onChange={(e) => setMetric(e.target.value)}
-            sx={{ backgroundColor: "#F9F4F4" }}
+            sx={{
+              borderRadius: "10px 10px 3px 3px",
+              backgroundColor: "#F9F4F4",
+              height: "45px",
+              border: "none",
+              boxShadow: "-1px 1px 2px #7a7171",
+              "& .MuiSelect-select": {
+                py: "10px",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                border: "none",
+              },
+            }}
           >
             <MenuItem value={"Overall"}>Overall</MenuItem>
             <MenuItem value={"Academics"}>Academics</MenuItem>
@@ -123,30 +164,64 @@ const LeaderboardPage = () => {
           </Select>
         </FormControl>
 
-        <FormControl fullWidth sx={{ marginTop: "10px" }}>
-          <InputLabel id="demo-simple-select-label">Order</InputLabel>
+        <FormControl
+          sx={{
+            marginTop: "10px",
+            width: { md: "100%", sm: "80%", xs: "65%" },
+          }}
+        >
+          <Typography>Order:</Typography>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={order}
             label="Order"
             onChange={(e) => setOrder(e.target.value)}
-            sx={{ backgroundColor: "#F9F4F4" }}
+            sx={{
+              borderRadius: "10px 10px 3px 3px",
+              backgroundColor: "#F9F4F4",
+              height: "45px",
+              border: "none",
+              boxShadow: "-1px 1px 2px #7a7171",
+              "& .MuiSelect-select": {
+                py: "10px",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                border: "none",
+              },
+            }}
           >
             <MenuItem value={"Best"}>Best</MenuItem>
             <MenuItem value={"Worst"}>Worst</MenuItem>
           </Select>
         </FormControl>
 
-        <FormControl fullWidth sx={{ marginTop: "10px" }}>
-          <InputLabel id="demo-simple-select-label">Country</InputLabel>
+        <FormControl
+          sx={{
+            marginTop: "10px",
+            width: { md: "100%", sm: "80%", xs: "65%" },
+          }}
+        >
+          <Typography>Country:</Typography>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             value={country}
             label="Country"
             onChange={(e) => setCountry(e.target.value)}
-            sx={{ backgroundColor: "#F9F4F4" }}
+            sx={{
+              borderRadius: "10px 10px 3px 3px",
+              backgroundColor: "#F9F4F4",
+              height: "45px",
+              border: "none",
+              boxShadow: "-1px 1px 2px #7a7171",
+              "& .MuiSelect-select": {
+                py: "10px",
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                border: "none",
+              },
+            }}
           >
             {Object.entries(CountryCodes).map(([key, value]) => (
               <MenuItem key={value} value={value}>

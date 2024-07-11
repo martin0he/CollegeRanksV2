@@ -177,7 +177,7 @@ const ReviewPage = () => {
                     backgroundColor: "#F9F4F4",
                     height: "45px",
                     boxShadow: "-1px 2px 1px #7a7171",
-                    fontSize: "22px",
+                    fontSize: "18px",
                   },
                   width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
                   height: "fit-content",
@@ -220,7 +220,7 @@ const ReviewPage = () => {
                 >
                   <Typography
                     fontWeight={500}
-                    fontSize={22}
+                    fontSize={18}
                     sx={{ color: "#484847" }}
                   >
                     Academics
@@ -248,7 +248,7 @@ const ReviewPage = () => {
                 >
                   <Typography
                     fontWeight={500}
-                    fontSize={22}
+                    fontSize={18}
                     sx={{ color: "#484847" }}
                   >
                     Housing
@@ -276,7 +276,7 @@ const ReviewPage = () => {
                 >
                   <Typography
                     fontWeight={500}
-                    fontSize={22}
+                    fontSize={18}
                     sx={{ color: "#484847" }}
                   >
                     Location
@@ -304,7 +304,7 @@ const ReviewPage = () => {
                 >
                   <Typography
                     fontWeight={500}
-                    fontSize={22}
+                    fontSize={18}
                     sx={{ color: "#484847" }}
                   >
                     Clubs
@@ -332,7 +332,7 @@ const ReviewPage = () => {
                 >
                   <Typography
                     fontWeight={500}
-                    fontSize={22}
+                    fontSize={18}
                     sx={{ color: "#484847" }}
                   >
                     Dining
@@ -360,7 +360,7 @@ const ReviewPage = () => {
                 >
                   <Typography
                     fontWeight={500}
-                    fontSize={22}
+                    fontSize={18}
                     sx={{ color: "#484847" }}
                   >
                     Social
@@ -388,7 +388,7 @@ const ReviewPage = () => {
                 >
                   <Typography
                     fontWeight={500}
-                    fontSize={22}
+                    fontSize={18}
                     sx={{ color: "#484847" }}
                   >
                     Opportunities
@@ -418,7 +418,7 @@ const ReviewPage = () => {
                 >
                   <Typography
                     fontWeight={500}
-                    fontSize={22}
+                    fontSize={18}
                     sx={{ color: "#484847" }}
                   >
                     Safety
@@ -443,7 +443,7 @@ const ReviewPage = () => {
               sx={{
                 marginY: "10px",
                 textTransform: "none",
-                fontSize: "22px",
+                fontSize: "18px",
                 borderRadius: "8px",
                 padding: "5px 15px",
                 "&:hover": {
@@ -475,10 +475,10 @@ const ReviewPage = () => {
               alignItems="flex-end"
               marginTop="18px"
             >
-              <Typography fontSize={22} fontWeight={500}>
+              <Typography fontSize={18} fontWeight={500}>
                 Overall
               </Typography>
-              <Typography fontSize={22} fontWeight={500}>
+              <Typography fontSize={18} fontWeight={500}>
                 Score
               </Typography>
             </Box>
