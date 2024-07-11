@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  Avatar,
   Box,
   Button,
   Typography,
@@ -67,7 +68,6 @@ const AccountPage = () => {
           flexDirection="column"
           justifyContent="space-between"
           alignItems="center"
-          height="35vh"
           sx={{
             width: {
               xs: 0.65 * width,
@@ -75,13 +75,26 @@ const AccountPage = () => {
               md: 0.45 * width,
               lg: 0.3 * width,
             },
+            height: "275px",
             boxShadow: "-1px 3px 2.5px #797272",
             borderRadius: "13px",
             backgroundColor: "#F9F4F4",
           }}
         >
-          <Box margin="14px">
-            <Typography fontWeight={550} fontSize={24} textAlign="center">
+          <Box
+            margin="14px"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Avatar alt="User" src={user.user_metadata.picture} />
+            <Typography
+              fontWeight={550}
+              fontSize={24}
+              textAlign="center"
+              sx={{ marginTop: "5px" }}
+            >
               Hi, {user.user_metadata.full_name}
             </Typography>
             <Typography
@@ -121,7 +134,6 @@ const AccountPage = () => {
           flexDirection="column"
           justifyContent="space-between"
           alignItems="center"
-          height="35vh"
           sx={{
             width: {
               xs: 0.65 * width,
@@ -129,6 +141,7 @@ const AccountPage = () => {
               md: 0.45 * width,
               lg: 0.3 * width,
             },
+            height: "275px",
             boxShadow: "-1px 3px 2.5px #797272",
             borderRadius: "13px",
             backgroundColor: "#F9F4F4",
