@@ -66,6 +66,7 @@ const Navbar = () => {
             position: "fixed",
             top: 0,
             right: 0,
+            zIndex: 3,
           }}
         >
           <IconButton
@@ -92,6 +93,7 @@ const Navbar = () => {
             position: "fixed",
             top: 0,
             left: 0,
+            zIndex: 3,
           }}
         >
           <Link
