@@ -4,6 +4,7 @@ import DashboardPage from "./pages/DashboardPage";
 import ReviewPage from "./pages/ReviewPage";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
+import { AuthProvider } from "./AuthProvider";
 
 const theme = createTheme({
   palette: {
@@ -36,15 +37,17 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <Navbar />
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<HomePage />} />
-          <Route path="/leaderboard" element={<DashboardPage />} />
-          <Route path="/review" element={<ReviewPage />} />
-          <Route path="/account" element={<ReviewPage />} />
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <Navbar />
+        <BrowserRouter>
+          <Routes>
+            <Route index element={<HomePage />} />
+            <Route path="/leaderboard" element={<DashboardPage />} />
+            <Route path="/review" element={<ReviewPage />} />
+            <Route path="/account" element={<ReviewPage />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

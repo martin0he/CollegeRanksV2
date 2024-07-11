@@ -50,7 +50,7 @@ const HomePage = () => {
         placeholder="Search University"
         sx={{
           width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
-          marginY: 3,
+          marginY: 6,
         }}
         InputProps={{
           style: {
@@ -75,13 +75,11 @@ const HomePage = () => {
         <Accordion
           sx={{
             backgroundColor: "#F1E0E0",
-            borderRadius: "15px 15px 0px 0px", // Rounded corners for all states
+            borderRadius: "15px 15px 0px 0px",
             width: "350px",
           }}
         >
-          <AccordionSummary
-            expandIcon={<ExpandLessIcon />} // Assuming you're using an expand icon
-          >
+          <AccordionSummary expandIcon={<ExpandLessIcon />}>
             <Typography>How does CollegeRanks work?</Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -96,7 +94,7 @@ const HomePage = () => {
         <Accordion
           sx={{
             backgroundColor: "#F1E0E0",
-            borderRadius: "15px 15px 0px 0px", // Consistent rounded corners
+            borderRadius: "15px 15px 0px 0px",
             width: "350px",
           }}
         >
