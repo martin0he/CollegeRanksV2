@@ -5,6 +5,7 @@ import ReviewPage from "./pages/ReviewPage";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./AuthProvider";
+import AccountPage from "./pages/AccountPage";
 
 const theme = createTheme({
   palette: {
@@ -44,7 +45,7 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path="/leaderboard" element={<DashboardPage />} />
             <Route path="/review" element={<ReviewPage />} />
-            <Route path="/account" element={<ReviewPage />} />
+            <Route path="/account" element={<AccountPage />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>

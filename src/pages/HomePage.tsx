@@ -28,7 +28,11 @@ const HomePage = () => {
       >
         CollegeRanks
       </Typography>
-      <Typography fontSize={32} fontWeight={500} color="secondary">
+      <Typography
+        sx={{ fontSize: { md: 32, sm: 28, xs: 24 } }}
+        fontWeight={500}
+        color="secondary"
+      >
         <Typewriter
           options={
             {
