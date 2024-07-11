@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { AuthProvider } from "./AuthProvider";
 import AccountPage from "./pages/AccountPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
+import UniversityPage from "./pages/UniversityPage";
 
 const theme = createTheme({
   palette: {
@@ -46,6 +47,7 @@ function App() {
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/review" element={<ReviewPage />} />
             <Route path="/account" element={<AccountPage />} />
+            <Route path="/university/:id" element={<UniversityPage />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
