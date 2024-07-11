@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import supabase from "../supabase";
 import { University } from "../types";
 import useWindowDimensions from "../useWindowDimensions";
+import { useAuth } from "../AuthProvider";
 
 const ReviewPage = () => {
   const [inputValue, setInputValue] = useState("");
@@ -30,6 +31,7 @@ const ReviewPage = () => {
 
   const theme = useTheme();
   const { width } = useWindowDimensions();
+  const { user } = useAuth();
 
   useEffect(() => {
     const newOverall =
@@ -95,8 +97,10 @@ const ReviewPage = () => {
                     backgroundColor: "#F9F4F4",
                     height: "45px",
                     boxShadow: "-1px 2px 1px #7a7171",
+                    fontSize: "22px",
                   },
                   width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
+                  height: "fit-content",
                   marginY: 2,
                 }}
                 {...params}
@@ -107,7 +111,8 @@ const ReviewPage = () => {
           <Box
             maxHeight="64vh"
             overflow={"auto"}
-            marginTop="20px"
+            marginTop="15px"
+            marginLeft="2.5px"
             sx={{
               "::-webkit-scrollbar": {
                 width: "8px",
@@ -353,6 +358,7 @@ const ReviewPage = () => {
             </Box>
 
             <Button
+              disabled={!user}
               sx={{
                 marginY: "10px",
                 textTransform: "none",

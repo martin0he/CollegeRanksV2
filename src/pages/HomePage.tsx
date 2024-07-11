@@ -108,8 +108,8 @@ const HomePage = () => {
           <AccordionDetails>
             <Typography>
               As a guest, you can still view the rating for any school as well
-              as look at the leaderboard. To review your school, you must create
-              an account.
+              as look at the leaderboard. To review your school, you must sign
+              up with Google.
             </Typography>
           </AccordionDetails>
         </Accordion>
