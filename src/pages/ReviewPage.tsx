@@ -1,3 +1,4 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import {
   Autocomplete,
   Box,
@@ -17,6 +18,7 @@ import { useAuth } from "../AuthProvider";
 
 const ReviewPage = () => {
   const [inputValue, setInputValue] = useState("");
+  const [university, setUniversity] = useState<University | null>(null);
   const [universities, setUniversities] = useState<University[]>([]);
   const [universityId, setUniversityId] = useState<string>();
   const [academics, setAcademics] = useState<number>(50);
@@ -99,8 +101,52 @@ const ReviewPage = () => {
       console.error("Error inserting review:", error);
       return;
     }
-
     console.log("Review submitted successfully", data);
+
+    const { data: University, error: fetchError } = await supabase
+      .from("Universities")
+      .select("*")
+      .eq("id", universityId)
+      .single();
+
+    if (fetchError) {
+      console.error("Error fetching university:", fetchError);
+      return;
+    }
+    setUniversity(University as University);
+
+    const previousAcademics = university?.avgAcademics || [];
+    const previousHousing = university?.avgHousing || [];
+    const previousLocation = university?.avgLocation || [];
+    const previousClubs = university?.avgClubs || [];
+    const previousFood = university?.avgFood || [];
+    const previousSocial = university?.avgSocial || [];
+    const previousOpportunities = university?.avgOpportunities || [];
+    const previousSafety = university?.avgSafety || [];
+    const previousOverall = university?.overallAverage || [];
+
+    const { data: updatedUniversity, error: updateError } = await supabase
+      .from("Universities")
+      .update({
+        avgAcademics: [...previousAcademics, academics],
+        avgHousing: [...previousHousing, housing],
+        avgLocation: [...previousLocation, location],
+        avgClubs: [...previousClubs, clubs],
+        avgFood: [...previousFood, food],
+        avgSocial: [...previousSocial, social],
+        avgOpportunities: [...previousOpportunities, opportunities],
+        avgSafety: [...previousSafety, safety],
+        overallAverage: [...previousOverall, overall],
+      })
+      .eq("id", universityId)
+      .select();
+
+    if (updateError) {
+      console.error("Error updating university:", updateError);
+      return;
+    }
+
+    console.log("Review submitted successfully", updatedUniversity);
   };
 
   return (

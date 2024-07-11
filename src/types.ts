@@ -3,15 +3,15 @@ export type University = {
   countryCode: string;
   name: string;
   website: string;
-  overallAverage: number;
-  avgAcademics: number;
-  avgHousing: number;
-  avgLocation: number;
-  avgClubs: number;
-  avgFood: number;
-  avgSocial: number;
-  avgOpportunities: number;
-  avgSafety: number;
+  overallAverage: number[];
+  avgAcademics: number[];
+  avgHousing: number[];
+  avgLocation: number[];
+  avgClubs: number[];
+  avgFood: number[];
+  avgSocial: number[];
+  avgOpportunities: number[];
+  avgSafety: number[];
 };
 
 export type Review = {
