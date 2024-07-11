@@ -15,13 +15,14 @@ import {
   LinearScale,
   BarElement,
   Tooltip,
+  Title,
 } from "chart.js";
 import { useEffect, useState } from "react";
 import { CountryCodes } from "../countries";
 import { University } from "../types";
 import supabase from "../supabase";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Title);
 const LeaderboardPage: React.FC = () => {
   const [size, setSize] = useState<number>(10);
   const [metric, setMetric] = useState<string>("overallAverage");
@@ -34,6 +35,23 @@ const LeaderboardPage: React.FC = () => {
 
   const theme = useTheme();
 
+  const metricNames: { [key: string]: string } = {
+    overallAverage: "Overall",
+    avgAcademics: "Academics",
+    avgHousing: "Housing",
+    avgLocation: "Location",
+    avgClubs: "Clubs",
+    avgFood: "Dining",
+    avgSocial: "Social",
+    avgOpportunities: "Opportunities",
+    avgSafety: "Safety",
+  };
+
+  const orderNames: { [key: string]: string } = {
+    Best: "Top",
+    Worst: "Bottom",
+  };
+
   const fetchUniversities = async () => {
     let query = supabase
       .from("Universities")
@@ -44,39 +62,44 @@ const LeaderboardPage: React.FC = () => {
       query = supabase.from("Universities").select("name, " + metric);
     }
 
-    if (order === "Best") {
-      query = query.order(metric, { ascending: true });
-    } else {
-      query = query.order(metric, { ascending: false });
-    }
-
-    query = query.limit(size);
+    const ascending = order === "Best" ? true : false;
+    query = query.order(metric, { ascending }).limit(size);
 
     const { data, error } = await query;
     if (error) {
       console.error(error);
     } else {
-      console.log(data); // Log the data to see the structure
-      const labels = data.map((university: any) => university.name);
-      const values = data.map((university: any) => {
+      const universityData = data.map((university: any) => {
         const metricArray = university[metric as keyof University] as number[];
-        if (Array.isArray(metricArray) && metricArray.length > 0) {
-          const average =
-            metricArray.reduce((acc, val) => acc + val, 0) / metricArray.length;
-          return average;
-        }
-        return 0;
+        const average =
+          Array.isArray(metricArray) && metricArray.length > 0
+            ? metricArray.reduce((acc, val) => acc + val, 0) /
+              metricArray.length
+            : 0;
+        return {
+          name: university.name,
+          value: Number(average.toFixed(1)),
+        };
       });
+
+      // Sort data based on the average values and the desired order
+      universityData.sort((a, b) =>
+        ascending ? a.value - b.value : b.value - a.value
+      );
+
+      const labels = universityData.map((u) => u.name);
+      const values = universityData.map((u) => u.value);
 
       setChartData({
         labels,
         datasets: [
           {
-            label: `${order} ${size} Universities by ${metric}`,
+            label: `${orderNames[order]} ${size} Universities by ${metricNames[metric]} Rating`,
             data: values,
             backgroundColor: theme.palette.primary.light,
             borderColor: theme.palette.primary.dark,
             borderWidth: 1,
+            borderRadius: 7,
           },
         ],
       });
@@ -95,7 +118,7 @@ const LeaderboardPage: React.FC = () => {
       },
       title: {
         display: true,
-        text: `${order} ${size} Universities by ${metric}`,
+        text: `${orderNames[order]} ${size} Universities by ${metricNames[metric]} Rating`,
       },
     },
   };
