@@ -29,7 +29,7 @@ const AccountPage = () => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: "http://localhost:5173",
+          redirectTo: "https://college-ranks-v2.vercel.app/",
           queryParams: {
             access_type: "offline",
             prompt: "consent",
