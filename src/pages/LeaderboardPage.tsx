@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useTheme } from "@mui/material";
 import { ChartData, ChartOptions } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import {
@@ -12,6 +12,7 @@ import {
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
 const LeaderboardPage = () => {
+  const theme = useTheme();
   const data: ChartData<"bar"> = {
     labels: [
       "one",
@@ -29,8 +30,8 @@ const LeaderboardPage = () => {
       {
         label: "Top 10 Universities",
         data: [65.4, 68, 71.2, 73, 75, 78.3, 80.5, 82.7, 85, 87.2],
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: theme.palette.primary.main,
+        borderColor: theme.palette.primary.dark,
         borderWidth: 1,
       },
     ],
