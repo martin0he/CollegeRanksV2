@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   FormControl,
   Grid,
@@ -15,40 +16,72 @@ import {
   BarElement,
   Tooltip,
 } from "chart.js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CountryCodes } from "../countries";
+import { University } from "../types";
+import supabase from "../supabase";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
-
-const LeaderboardPage = () => {
-  const [size, setSize] = useState(10);
-  const [metric, setMetric] = useState<string>("Overall");
+const LeaderboardPage: React.FC = () => {
+  const [size, setSize] = useState<number>(10);
+  const [metric, setMetric] = useState<string>("overallAverage");
   const [order, setOrder] = useState<string>("Best");
   const [country, setCountry] = useState<string>(CountryCodes.Global);
+  const [chartData, setChartData] = useState<ChartData<"bar">>({
+    labels: [],
+    datasets: [],
+  });
+
   const theme = useTheme();
-  const data: ChartData<"bar"> = {
-    labels: [
-      "one",
-      "two",
-      "three",
-      "four",
-      "five",
-      "six",
-      "seven",
-      "eight",
-      "nine",
-      "ten",
-    ],
-    datasets: [
-      {
-        label: "Top 10 Universities",
-        data: [65.4, 68, 71.2, 73, 75, 78.3, 80.5, 82.7, 85, 87.2],
-        backgroundColor: theme.palette.primary.light,
-        borderColor: theme.palette.primary.dark,
-        borderWidth: 1,
-      },
-    ],
+
+  const fetchUniversities = async () => {
+    let query = supabase
+      .from("Universities")
+      .select("name, " + metric)
+      .eq("countryCode", country);
+
+    if (order === "Best") {
+      query = query.order(metric, { ascending: false });
+    } else {
+      query = query.order(metric, { ascending: true });
+    }
+
+    query = query.limit(size);
+
+    const { data, error } = await query;
+    if (error) {
+      console.error(error);
+    } else {
+      console.log(data); // Log the data to see the structure
+      const labels = data.map((university: any) => university.name);
+      const values = data.map((university: any) => {
+        const metricArray = university[metric as keyof University] as number[];
+        if (Array.isArray(metricArray) && metricArray.length > 0) {
+          const average =
+            metricArray.reduce((acc, val) => acc + val, 0) / metricArray.length;
+          return average;
+        }
+        return 0;
+      });
+
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: `${order} ${size} Universities by ${metric}`,
+            data: values,
+            backgroundColor: theme.palette.primary.light,
+            borderColor: theme.palette.primary.dark,
+            borderWidth: 1,
+          },
+        ],
+      });
+    }
   };
+
+  useEffect(() => {
+    fetchUniversities();
+  }, [size, metric, order, country]);
 
   const options: ChartOptions<"bar"> = {
     responsive: true,
@@ -58,7 +91,7 @@ const LeaderboardPage = () => {
       },
       title: {
         display: true,
-        text: "Top 10 Universities",
+        text: `${order} ${size} Universities by ${metric}`,
       },
     },
   };
@@ -76,7 +109,7 @@ const LeaderboardPage = () => {
         flexDirection="column"
         style={{ height: "80%", padding: "10px", marginTop: "30px" }}
       >
-        <Bar data={data} options={options} />
+        <Bar data={chartData} options={options} />
       </Grid>
       <Grid
         item
@@ -152,15 +185,15 @@ const LeaderboardPage = () => {
               },
             }}
           >
-            <MenuItem value={"Overall"}>Overall</MenuItem>
-            <MenuItem value={"Academics"}>Academics</MenuItem>
-            <MenuItem value={"Housing"}>Housing</MenuItem>
-            <MenuItem value={"Location"}>Location</MenuItem>
-            <MenuItem value={"Clubs"}>Clubs</MenuItem>
-            <MenuItem value={"Dining"}>Dining</MenuItem>
-            <MenuItem value={"Social"}>Social</MenuItem>
-            <MenuItem value={"Opportunities"}>Opportunities</MenuItem>
-            <MenuItem value={"Safety"}>Safety</MenuItem>
+            <MenuItem value="overallAverage">Overall</MenuItem>
+            <MenuItem value="avgAcademics">Academics</MenuItem>
+            <MenuItem value="avgHousing">Housing</MenuItem>
+            <MenuItem value="avgLocation">Location</MenuItem>
+            <MenuItem value="avgClubs">Clubs</MenuItem>
+            <MenuItem value="avgFood">Dining</MenuItem>
+            <MenuItem value="avgSocial">Social</MenuItem>
+            <MenuItem value="avgOpportunities">Opportunities</MenuItem>
+            <MenuItem value="avgSafety">Safety</MenuItem>
           </Select>
         </FormControl>
 
@@ -191,8 +224,8 @@ const LeaderboardPage = () => {
               },
             }}
           >
-            <MenuItem value={"Best"}>Best</MenuItem>
-            <MenuItem value={"Worst"}>Worst</MenuItem>
+            <MenuItem value="Best">Best</MenuItem>
+            <MenuItem value="Worst">Worst</MenuItem>
           </Select>
         </FormControl>
 
