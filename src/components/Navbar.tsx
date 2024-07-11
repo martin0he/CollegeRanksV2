@@ -107,7 +107,12 @@ const Navbar = () => {
               color: "black",
             }}
           >
-            <Typography fontSize={28}>home</Typography>
+            <Typography
+              sx={{ color: "#484847", "&:hover": { color: "black" } }}
+              fontSize={28}
+            >
+              home
+            </Typography>
           </Link>
           <Link
             href="/leaderboard"
@@ -118,7 +123,12 @@ const Navbar = () => {
               color: "black",
             }}
           >
-            <Typography fontSize={28}>leaderboard</Typography>
+            <Typography
+              sx={{ color: "#484847", "&:hover": { color: "black" } }}
+              fontSize={28}
+            >
+              leaderboard
+            </Typography>
           </Link>
           <Link
             href="/review"
@@ -129,7 +139,12 @@ const Navbar = () => {
               color: "black",
             }}
           >
-            <Typography fontSize={28}>review</Typography>
+            <Typography
+              sx={{ color: "#484847", "&:hover": { color: "black" } }}
+              fontSize={28}
+            >
+              review
+            </Typography>
           </Link>
           <Link
             href="/account"
@@ -140,7 +155,12 @@ const Navbar = () => {
               color: "black",
             }}
           >
-            <Typography fontSize={28}>account</Typography>
+            <Typography
+              sx={{ color: "#484847", "&:hover": { color: "black" } }}
+              fontSize={28}
+            >
+              account
+            </Typography>
           </Link>
         </Box>
       )}
