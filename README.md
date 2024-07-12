@@ -10,7 +10,7 @@ https://github.com/user-attachments/assets/0fdc2da5-2558-4b09-a38c-d4dd2094d6bc
 
 **Client:** React, Vite, MUI, Chart.js
 
-**Server:** Supabase
+**Server:** Supabase (+ Google Cloud OAuth)
 
 ## Authors
 
