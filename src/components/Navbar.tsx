@@ -39,19 +39,22 @@ const Navbar = () => {
         >
           <List>
             <ListItem disablePadding>
-              <ListItemButton>
-                <Link href="/" sx={{ textDecoration: "none" }}>
+              <Link href="/" sx={{ textDecoration: "none", width: "100%" }}>
+                <ListItemButton>
                   <ListItemText primary="home" />
-                </Link>
-              </ListItemButton>
+                </ListItemButton>
+              </Link>
             </ListItem>
             {["leaderboard", "review", "account"].map((text) => (
               <ListItem key={text} disablePadding>
-                <ListItemButton>
-                  <Link href={`/${text}`} sx={{ textDecoration: "none" }}>
+                <Link
+                  href={`/${text}`}
+                  sx={{ textDecoration: "none", width: "100%" }}
+                >
+                  <ListItemButton>
                     <ListItemText primary={text} />
-                  </Link>
-                </ListItemButton>
+                  </ListItemButton>
+                </Link>
               </ListItem>
             ))}
           </List>

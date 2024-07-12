@@ -1,15 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  Autocomplete,
-  Box,
-  TextField,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
+import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import Typewriter, { Options } from "typewriter-effect";
 import useWindowDimensions from "../utils/useWindowDimensions";
-
+import { isMobile } from "react-device-detect";
 import { University } from "../utils/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -21,8 +14,6 @@ const HomePage = () => {
   const [universities, setUniversities] = useState<University[]>([]);
   const { width } = useWindowDimensions();
   const navigate = useNavigate();
-  const theme = useTheme();
-  const biggerThanMd = useMediaQuery(theme.breakpoints.up("xs"));
 
   useEffect(() => {
     const fetchUniversities = async () => {
@@ -124,7 +115,7 @@ const HomePage = () => {
         />
       </Box>
 
-      {biggerThanMd && (
+      {!isMobile && (
         <Box
           display="flex"
           justifyContent="center"
