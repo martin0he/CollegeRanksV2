@@ -14,7 +14,8 @@ Users can filter the leaderboard by country, order (best/worst), selection size,
 **Server:** Supabase (+ Google Cloud OAuth)
 
 ## Screenshots
-https://github.com/user-attachments/assets/0fdc2da5-2558-4b09-a38c-d4dd2094d6bc
+
+![image](https://github.com/user-attachments/assets/a7cf8ab7-164a-44d1-bb4e-f67f87ce2b8e)
 ![image](https://github.com/user-attachments/assets/3e345f2d-e736-4cd8-9bd6-c0aaf9736f9d)
 ![image](https://github.com/user-attachments/assets/5ac8f0d5-c30c-45ac-907c-b471a1865e88)
 ![image](https://github.com/user-attachments/assets/02b83a22-f178-46cb-9e9e-c886f9cfbbfc)
