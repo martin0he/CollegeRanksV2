@@ -120,11 +120,11 @@ const LeaderboardPage: React.FC = () => {
 
   useEffect(() => {
     if (isXs) {
-      setLabelRotation(75);
+      setLabelRotation(65);
     } else if (isSm) {
-      setLabelRotation(60);
+      setLabelRotation(50);
     } else {
-      setLabelRotation(45);
+      setLabelRotation(35);
     }
   }, [isXs, isSm]);
 
