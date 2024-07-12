@@ -5,13 +5,22 @@ A leaderboard-style ranking website for students and alumni to review and rank h
 
 Users can filter the leaderboard by country, order (best/worst), selection size, 8 relevant metrics, and by overall rating.
 
-https://github.com/user-attachments/assets/0fdc2da5-2558-4b09-a38c-d4dd2094d6bc
+
 
 ## Tech Stack
 
 **Client:** React, Vite, MUI, Chart.js
 
 **Server:** Supabase (+ Google Cloud OAuth)
+
+## Screenshots
+https://github.com/user-attachments/assets/0fdc2da5-2558-4b09-a38c-d4dd2094d6bc
+![image](https://github.com/user-attachments/assets/3e345f2d-e736-4cd8-9bd6-c0aaf9736f9d)
+![image](https://github.com/user-attachments/assets/5ac8f0d5-c30c-45ac-907c-b471a1865e88)
+![image](https://github.com/user-attachments/assets/02b83a22-f178-46cb-9e9e-c886f9cfbbfc)
+![image](https://github.com/user-attachments/assets/29baa36b-5b47-463c-a206-54c0b228e29b)
+![image](https://github.com/user-attachments/assets/dbb8eb00-33c8-4456-b57a-d5cff218e6af)
+
 
 ## Authors
 
