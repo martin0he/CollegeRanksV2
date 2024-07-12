@@ -18,6 +18,7 @@ import { Review, University } from "../utils/types";
 import useWindowDimensions from "../utils/useWindowDimensions";
 import { useAuth } from "../utils/AuthProvider";
 import CheckIcon from "@mui/icons-material/Check";
+import { isMobile } from "react-device-detect";
 
 const ReviewPage = () => {
   const [inputValue, setInputValue] = useState("");
@@ -177,12 +178,15 @@ const ReviewPage = () => {
           <Alert
             sx={{
               position: "fixed",
-              bottom: "15px",
-              left: "15px",
-              width: "fit-content",
+              bottom: isMobile ? "auto" : "15px",
+              top: isMobile ? "15px" : "auto",
+              left: isMobile ? "50%" : "15px",
+              width: isMobile ? "70vw" : "fit-content",
+              transform: isMobile ? "translateX(-50%)" : "none",
               zIndex: 1000,
               borderRadius: "12px",
               backgroundColor: theme.palette.primary.light,
+              color: "white",
             }}
             icon={
               <CheckIcon
