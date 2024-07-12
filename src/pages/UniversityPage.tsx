@@ -19,7 +19,7 @@ const UniversityPage = () => {
         console.error("Error fetching university:", error);
         return;
       }
-      setUniversity(data);
+      setUniversity(data as University);
     };
 
     if (id) {
@@ -54,6 +54,7 @@ const UniversityPage = () => {
             sx={{ fontSize: { md: 100, sm: 80, xs: 60 } }}
             color={"primary"}
             textAlign={"center"}
+            padding="30px"
           >
             {university.name}
           </Typography>
@@ -62,7 +63,9 @@ const UniversityPage = () => {
             textAlign={"center"}
             color="secondary"
           >
-            Overall: {getMetricAverage(university.overallAverage)}
+            {university.overallAverage
+              ? `Overall: ${getMetricAverage(university.overallAverage)}`
+              : "Overall: N/A"}
           </Typography>
           <Grid container marginY="15px">
             <Grid
@@ -75,16 +78,24 @@ const UniversityPage = () => {
               alignItems="center"
             >
               <Typography>
-                Academics: {getMetricAverage(university.avgAcademics)}
+                {university.avgAcademics
+                  ? `Academics: ${getMetricAverage(university.avgAcademics)}`
+                  : "Academics: N/A"}
               </Typography>
               <Typography>
-                Housing: {getMetricAverage(university.avgHousing)}
+                {university.avgHousing
+                  ? `Housing: ${getMetricAverage(university.avgHousing)}`
+                  : "Housing: N/A"}
               </Typography>
               <Typography>
-                Location: {getMetricAverage(university.avgLocation)}
+                {university.avgLocation
+                  ? `Location: ${getMetricAverage(university.avgLocation)}`
+                  : "Location: N/A"}
               </Typography>
               <Typography>
-                Clubs: {getMetricAverage(university.avgClubs)}
+                {university.avgClubs
+                  ? `Clubs: ${getMetricAverage(university.avgClubs)}`
+                  : "Clubs: N/A"}
               </Typography>
             </Grid>
             <Grid
@@ -97,16 +108,26 @@ const UniversityPage = () => {
               alignItems="center"
             >
               <Typography>
-                Dining: {getMetricAverage(university.avgFood)}
+                {university.avgFood
+                  ? `Dining: ${getMetricAverage(university.avgFood)}`
+                  : "Dining: N/A"}
               </Typography>
               <Typography>
-                Social: {getMetricAverage(university.avgSocial)}
+                {university.avgSocial
+                  ? `Social: ${getMetricAverage(university.avgSocial)}`
+                  : "Social: N/A"}
               </Typography>
               <Typography>
-                Opportunities: {getMetricAverage(university.avgOpportunities)}
+                {university.avgOpportunities
+                  ? `Opportunities: ${getMetricAverage(
+                      university.avgOpportunities
+                    )}`
+                  : "Opportunities: N/A"}
               </Typography>
               <Typography>
-                Safety: {getMetricAverage(university.avgSafety)}
+                {university.avgSafety
+                  ? `Safety: ${getMetricAverage(university.avgSafety)}`
+                  : "Safety: N/A"}
               </Typography>
             </Grid>
           </Grid>
