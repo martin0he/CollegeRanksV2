@@ -16,7 +16,7 @@ import { useState } from "react";
 
 const Navbar = () => {
   const { width } = useWindowDimensions();
-  const isSmallScreen = width < 680;
+  const isSmallScreen = width < 900;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const theme = useTheme();
 
@@ -67,6 +67,7 @@ const Navbar = () => {
             top: 0,
             right: 0,
             zIndex: 3,
+            backgroundColor: theme.palette.background.default,
           }}
         >
           <IconButton

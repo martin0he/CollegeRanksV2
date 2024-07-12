@@ -223,6 +223,7 @@ const ReviewPage = () => {
           width="fit-content"
         >
           <Autocomplete
+            sx={{ paddingLeft: "15px" }}
             id="combo-box-demo"
             options={universities}
             getOptionLabel={(option: University) =>
@@ -264,6 +265,7 @@ const ReviewPage = () => {
             marginTop="15px"
             marginLeft="2.5px"
             paddingRight="25px"
+            paddingLeft="15px"
             sx={{
               maxHeight: { md: "64vh", sm: "100%", xs: "100%" },
               "::-webkit-scrollbar": {
