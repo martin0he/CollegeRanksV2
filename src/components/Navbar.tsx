@@ -11,7 +11,7 @@ import {
   useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import useWindowDimensions from "../useWindowDimensions";
+import useWindowDimensions from "../utils/useWindowDimensions";
 import { useState } from "react";
 
 const Navbar = () => {

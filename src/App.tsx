@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ReviewPage from "./pages/ReviewPage";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
-import { AuthProvider } from "./AuthProvider";
+import { AuthProvider } from "./utils/AuthProvider";
 import AccountPage from "./pages/AccountPage";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import UniversityPage from "./pages/UniversityPage";

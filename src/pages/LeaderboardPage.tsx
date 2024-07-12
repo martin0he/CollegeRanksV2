@@ -18,9 +18,9 @@ import {
   Tooltip,
 } from "chart.js";
 import { useEffect, useState } from "react";
-import { CountryCodes } from "../countries";
-import { University } from "../types";
-import supabase from "../supabase";
+import { CountryCodes } from "../utils/countries";
+import { University } from "../utils/types";
+import supabase from "../utils/supabase";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 

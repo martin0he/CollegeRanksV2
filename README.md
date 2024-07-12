@@ -1,30 +1,49 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# CollegeRanks
 
-Currently, two official plugins are available:
+A leaderboard-style ranking website for students and alumni to review and rank higher education institutions.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Users can filter the leaderboard by country, order (best/worst), selection size, 8 relevant metrics, and by overall rating.
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tech Stack
 
-- Configure the top-level `parserOptions` property like this:
+**Client:** React, Vite, MUI, Chart.js
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+**Server:** Supabase
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+## Authors
+
+- [@Martin Hema](https://www.github.com/martin0he)
+
+
+## Live
+
+https://college-ranks-v2.vercel.app/
+
+## Style Reference
+
+| Color             | Hex                                                                |
+| ----------------- | ------------------------------------------------------------------ |
+| Primary Color | ![#777C49](https://via.placeholder.com/10/777C49?text=+) #777C49 |
+| Secondary Color | ![#80727B](https://via.placeholder.com/10/80727B?text=+) #80727B |
+| Background | ![#F9ECEC](https://via.placeholder.com/10/F9ECEC?text=+) #F9ECEC |
+| Text | ![#4f4f4e](https://via.placeholder.com/10/4f4f4e?text=+) #4f4f4e |
+
+| Font             | Jost                                                                |
+| ----------------- | ------------------------------------------------------------------ |
+
+## Appendix
+
+I made this initially as a revamp of an old project but it turned out to be really fun and helped polished my design skills a lot. I hope people use this 
+
+
+## Roadmap
+
+- Add more unique metrics
+
+- Implement historical graph to filter rankings by date
+
+- Add field of study for each review
+

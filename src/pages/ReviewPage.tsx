@@ -13,10 +13,10 @@ import {
   useTheme,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import supabase from "../supabase";
-import { Review, University } from "../types";
-import useWindowDimensions from "../useWindowDimensions";
-import { useAuth } from "../AuthProvider";
+import supabase from "../utils/supabase";
+import { Review, University } from "../utils/types";
+import useWindowDimensions from "../utils/useWindowDimensions";
+import { useAuth } from "../utils/AuthProvider";
 import CheckIcon from "@mui/icons-material/Check";
 
 const ReviewPage = () => {

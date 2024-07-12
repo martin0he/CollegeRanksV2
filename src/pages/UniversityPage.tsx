@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { University } from "../types";
-import supabase from "../supabase";
+import { University } from "../utils/types";
+import supabase from "../utils/supabase";
 import { Box, CircularProgress, Grid, Typography } from "@mui/material";
 
 const UniversityPage = () => {

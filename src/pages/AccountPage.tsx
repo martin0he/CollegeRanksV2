@@ -7,9 +7,9 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import supabase from "../supabase";
-import useWindowDimensions from "../useWindowDimensions";
-import { useAuth } from "../AuthProvider";
+import supabase from "../utils/supabase";
+import useWindowDimensions from "../utils/useWindowDimensions";
+import { useAuth } from "../utils/AuthProvider";
 import GoogleIcon from "@mui/icons-material/Google";
 import LogoutIcon from "@mui/icons-material/Logout";
 

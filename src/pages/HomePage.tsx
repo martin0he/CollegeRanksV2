@@ -9,12 +9,12 @@ import {
   Typography,
 } from "@mui/material";
 import Typewriter, { Options } from "typewriter-effect";
-import useWindowDimensions from "../useWindowDimensions";
+import useWindowDimensions from "../utils/useWindowDimensions";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import { University } from "../types";
+import { University } from "../utils/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import supabase from "../supabase";
+import supabase from "../utils/supabase";
 
 const HomePage = () => {
   const [inputValue, setInputValue] = useState("");
