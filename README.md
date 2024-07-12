@@ -1,4 +1,5 @@
-# CollegeRanks
+# CollegeRanks v2
+(Remake of CollegeRanks v1)
 
 A leaderboard-style ranking website for students and alumni to review and rank higher education institutions.
 
