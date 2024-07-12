@@ -1,26 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Autocomplete,
   Box,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import Typewriter, { Options } from "typewriter-effect";
 import useWindowDimensions from "../utils/useWindowDimensions";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+
 import { University } from "../utils/types";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../utils/supabase";
+import BottomAccordion from "../components/BottomAccordion";
 
 const HomePage = () => {
   const [inputValue, setInputValue] = useState("");
   const [universities, setUniversities] = useState<University[]>([]);
   const { width } = useWindowDimensions();
   const navigate = useNavigate();
+  const theme = useTheme();
+  const biggerThanMd = useMediaQuery(theme.breakpoints.up("xs"));
 
   useEffect(() => {
     const fetchUniversities = async () => {
@@ -122,54 +124,31 @@ const HomePage = () => {
         />
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          position: "fixed",
-          bottom: 0,
-          width: "100%",
-          gap: "20px",
-        }}
-      >
-        <Accordion
-          sx={{
-            backgroundColor: "#F1E0E0",
-            borderRadius: "15px 15px 0px 0px",
-            width: "350px",
-          }}
+      {biggerThanMd && (
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          position="fixed"
+          bottom="0px"
+          left="0"
+          right="0"
+          gap="36vw"
         >
-          <AccordionSummary expandIcon={<ExpandLessIcon />}>
-            <Typography>How does CollegeRanks work?</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              Here, you can view the average metric ratings for your
-              institution, look at the leaderboard accompanied by filters, and
-              review your own school to help others obtain an accurate
-              representation.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          sx={{
-            backgroundColor: "#F1E0E0",
-            borderRadius: "15px 15px 0px 0px",
-            width: "350px",
-          }}
-        >
-          <AccordionSummary expandIcon={<ExpandLessIcon />}>
-            <Typography>Do I need an account?</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>
-              As a guest, you can still view the rating for any school as well
-              as look at the leaderboard. To review your school, you must sign
-              up with Google.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-      </Box>
+          <Box display="flex" flexDirection="row" justifyContent="center">
+            <BottomAccordion
+              title="How does it work?"
+              content="Here you can view the average metric ratings for your institution, look at the leaderboard accompanied by filters, and review your own school to help others obtain an accurate and honest insight."
+            />
+          </Box>
+          <Box display="flex" flexDirection="row" justifyContent="center">
+            <BottomAccordion
+              title="Do I need to sign up?"
+              content="As a guest, you can still view any school's rating as well as use the leaderboard. To review your school, you must sign up with Google."
+            />
+          </Box>
+        </Box>
+      )}
     </Box>
   );
 };
