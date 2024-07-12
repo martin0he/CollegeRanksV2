@@ -4,6 +4,8 @@ A leaderboard-style ranking website for students and alumni to review and rank h
 
 Users can filter the leaderboard by country, order (best/worst), selection size, 8 relevant metrics, and by overall rating.
 
+https://github.com/user-attachments/assets/0fdc2da5-2558-4b09-a38c-d4dd2094d6bc
+
 ## Tech Stack
 
 **Client:** React, Vite, MUI, Chart.js
