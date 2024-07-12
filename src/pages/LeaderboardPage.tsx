@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
   Typography,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { ChartData, ChartOptions } from "chart.js";
@@ -33,7 +34,7 @@ const LeaderboardPage: React.FC = () => {
     labels: [],
     datasets: [],
   });
-
+  const [labelRotation, setLabelRotation] = useState<number>(60);
   const theme = useTheme();
 
   const metricNames: { [key: string]: string } = {
@@ -114,9 +115,30 @@ const LeaderboardPage: React.FC = () => {
     fetchUniversities();
   }, [size, metric, order, country]);
 
+  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSm = useMediaQuery(theme.breakpoints.down("md"));
+
+  useEffect(() => {
+    if (isXs) {
+      setLabelRotation(75);
+    } else if (isSm) {
+      setLabelRotation(60);
+    } else {
+      setLabelRotation(45);
+    }
+  }, [isXs, isSm]);
+
   const options: ChartOptions<"bar"> = {
     responsive: true,
     maintainAspectRatio: false,
+    scales: {
+      x: {
+        ticks: {
+          maxRotation: labelRotation,
+          minRotation: labelRotation,
+        },
+      },
+    },
     plugins: {
       legend: {
         position: "top",

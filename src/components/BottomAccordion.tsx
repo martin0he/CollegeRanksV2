@@ -22,6 +22,7 @@ const BottomAccordion = ({ title, content }: BottomAccordionProps) => {
         zIndex: 1000,
         borderRadius: "16px 16px 0 0",
         overflow: "hidden",
+        boxShadow: "1px -1px 3px rgba(0,0,0,0.75)",
       }}
     >
       <Accordion
