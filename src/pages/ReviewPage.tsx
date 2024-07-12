@@ -1,8 +1,10 @@
 /* eslint-disable no-unsafe-optional-chaining */
 import {
+  Alert,
   Autocomplete,
   Box,
   Button,
+  Fade,
   Grid,
   Slider,
   TextField,
@@ -15,6 +17,7 @@ import supabase from "../supabase";
 import { Review, University } from "../types";
 import useWindowDimensions from "../useWindowDimensions";
 import { useAuth } from "../AuthProvider";
+import CheckIcon from "@mui/icons-material/Check";
 
 const ReviewPage = () => {
   const [inputValue, setInputValue] = useState("");
@@ -29,6 +32,8 @@ const ReviewPage = () => {
   const [opportunities, setOpportunities] = useState<number>(50);
   const [safety, setSafety] = useState<number>(50);
   const [overall, setOverall] = useState<number>(0);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [singleUniversity, setSingleUniversity] = useState<University>();
 
   const theme = useTheme();
   const { width } = useWindowDimensions();
@@ -113,6 +118,8 @@ const ReviewPage = () => {
       return;
     }
 
+    setSingleUniversity(university as University);
+
     const updatedMetrics = {
       avgAcademics: university.avgAcademics
         ? [...university.avgAcademics, academics]
@@ -149,13 +156,72 @@ const ReviewPage = () => {
       return;
     }
 
+    setShowAlert(true);
     console.log("University updated successfully");
   };
 
   return (
-    <Box width="90vw" height="75vh">
-      <Grid container margin="45px">
-        <Grid item md={6} sm={12} xs={12} padding="15px">
+    <Box
+      sx={{
+        width: { md: "98vw", sm: "fit-content", xs: "fit-content" },
+      }}
+      height="fit-content"
+      display="flex"
+      justifyContent="center"
+      alignItems="flex-start"
+      marginTop="85px"
+      marginBottom="15px"
+    >
+      {showAlert && (
+        <Fade in={showAlert} timeout={500}>
+          <Alert
+            sx={{
+              position: "fixed",
+              bottom: "15px",
+              left: "15px",
+              width: "fit-content",
+              zIndex: 1000,
+              borderRadius: "12px",
+              backgroundColor: theme.palette.primary.light,
+            }}
+            icon={
+              <CheckIcon
+                fontSize="inherit"
+                sx={{ color: "white", marginTop: "4px" }}
+              />
+            }
+            onClose={() => {
+              setShowAlert(false);
+            }}
+          >
+            <Typography
+              sx={{ fontSize: { xs: "13px", sm: "16px", md: "17px" } }}
+              color="white"
+            >
+              Review for {singleUniversity?.name} submitted successfully!
+            </Typography>
+          </Alert>
+        </Fade>
+      )}
+      <Grid container paddingX="30px" paddingY="16px">
+        <Grid
+          item
+          md={6}
+          sm={12}
+          xs={12}
+          padding="15px"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: { md: "flex-start", sm: "center", xs: "center" },
+            alignItems: {
+              md: "flex-start",
+              sm: "center",
+              xs: "center",
+            },
+          }}
+          width="fit-content"
+        >
           <Autocomplete
             id="combo-box-demo"
             options={universities}
@@ -179,7 +245,11 @@ const ReviewPage = () => {
                     boxShadow: "-1px 2px 1px #7a7171",
                     fontSize: "18px",
                   },
-                  width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
                   height: "fit-content",
                   marginY: 2,
                 }}
@@ -189,11 +259,13 @@ const ReviewPage = () => {
             )}
           />
           <Box
-            maxHeight="64vh"
+            width="fit-content"
             overflow={"auto"}
             marginTop="15px"
             marginLeft="2.5px"
+            paddingRight="25px"
             sx={{
+              maxHeight: { md: "64vh", sm: "100%", xs: "100%" },
               "::-webkit-scrollbar": {
                 width: "8px",
                 borderRadius: "10px",
@@ -211,7 +283,13 @@ const ReviewPage = () => {
               },
             }}
           >
-            <Box width="fit-content" height="fit-content" marginY={1.2}>
+            <Box
+              width="fit-content"
+              height="fit-content"
+              marginY={1.2}
+              display="flex"
+              flexDirection="column"
+            >
               <Box display="inline-flex" alignItems="center">
                 <Tooltip
                   arrow
@@ -229,7 +307,11 @@ const ReviewPage = () => {
               </Box>
               <Slider
                 sx={{
-                  width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
                 }}
                 size="small"
                 value={academics}
@@ -239,7 +321,13 @@ const ReviewPage = () => {
               />
             </Box>
 
-            <Box width="fit-content" height="fit-content" marginY={1.2}>
+            <Box
+              width="fit-content"
+              height="fit-content"
+              marginY={1.2}
+              display="flex"
+              flexDirection="column"
+            >
               <Box display="inline-flex" alignItems="center">
                 <Tooltip
                   arrow
@@ -257,7 +345,11 @@ const ReviewPage = () => {
               </Box>
               <Slider
                 sx={{
-                  width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
                 }}
                 size="small"
                 value={housing}
@@ -267,7 +359,13 @@ const ReviewPage = () => {
               />
             </Box>
 
-            <Box width="fit-content" height="fit-content" marginY={1.2}>
+            <Box
+              width="fit-content"
+              height="fit-content"
+              marginY={1.2}
+              display="flex"
+              flexDirection="column"
+            >
               <Box display="inline-flex" alignItems="center">
                 <Tooltip
                   arrow
@@ -285,7 +383,11 @@ const ReviewPage = () => {
               </Box>
               <Slider
                 sx={{
-                  width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
                 }}
                 size="small"
                 value={location}
@@ -295,7 +397,13 @@ const ReviewPage = () => {
               />
             </Box>
 
-            <Box width="fit-content" height="fit-content" marginY={1.2}>
+            <Box
+              width="fit-content"
+              height="fit-content"
+              marginY={1.2}
+              display="flex"
+              flexDirection="column"
+            >
               <Box display="inline-flex" alignItems="center">
                 <Tooltip
                   arrow
@@ -313,7 +421,11 @@ const ReviewPage = () => {
               </Box>
               <Slider
                 sx={{
-                  width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
                 }}
                 size="small"
                 value={clubs}
@@ -323,7 +435,13 @@ const ReviewPage = () => {
               />
             </Box>
 
-            <Box width="fit-content" height="fit-content" marginY={1.2}>
+            <Box
+              width="fit-content"
+              height="fit-content"
+              marginY={1.2}
+              display="flex"
+              flexDirection="column"
+            >
               <Box display="inline-flex" alignItems="center">
                 <Tooltip
                   arrow
@@ -341,7 +459,11 @@ const ReviewPage = () => {
               </Box>
               <Slider
                 sx={{
-                  width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
                 }}
                 size="small"
                 value={food}
@@ -351,7 +473,13 @@ const ReviewPage = () => {
               />
             </Box>
 
-            <Box width="fit-content" height="fit-content" marginY={1.2}>
+            <Box
+              width="fit-content"
+              height="fit-content"
+              marginY={1.2}
+              display="flex"
+              flexDirection="column"
+            >
               <Box display="inline-flex" alignItems="center">
                 <Tooltip
                   arrow
@@ -369,7 +497,11 @@ const ReviewPage = () => {
               </Box>
               <Slider
                 sx={{
-                  width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
                 }}
                 size="small"
                 value={social}
@@ -379,7 +511,13 @@ const ReviewPage = () => {
               />
             </Box>
 
-            <Box width="fit-content" height="fit-content" marginY={1.2}>
+            <Box
+              width="fit-content"
+              height="fit-content"
+              marginY={1.2}
+              display="flex"
+              flexDirection="column"
+            >
               <Box display="inline-flex" alignItems="center">
                 <Tooltip
                   arrow
@@ -397,7 +535,11 @@ const ReviewPage = () => {
               </Box>
               <Slider
                 sx={{
-                  width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
                 }}
                 size="small"
                 value={opportunities}
@@ -409,7 +551,13 @@ const ReviewPage = () => {
               />
             </Box>
 
-            <Box width="fit-content" height="fit-content" marginY={1.2}>
+            <Box
+              width="fit-content"
+              height="fit-content"
+              marginY={1.2}
+              display="flex"
+              flexDirection="column"
+            >
               <Box display="inline-flex" alignItems="center">
                 <Tooltip
                   arrow
@@ -427,7 +575,11 @@ const ReviewPage = () => {
               </Box>
               <Slider
                 sx={{
-                  width: { md: 0.4 * width, sm: 0.55 * width, xs: 0.7 * width },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
                 }}
                 size="small"
                 value={safety}
@@ -464,9 +616,10 @@ const ReviewPage = () => {
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "flex-end",
-            alignItems: "flex-end",
+            justifyContent: { md: "flex-end", sm: "center", xs: "center" },
+            alignItems: { md: "flex-end", sm: "center", xs: "center" },
           }}
+          width="fit-content"
         >
           <Box display="flex" alignItems="center">
             <Box
