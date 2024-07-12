@@ -48,18 +48,18 @@ const UniversityPage = () => {
           flexDirection={"column"}
           justifyContent="center"
           alignItems="center"
+          padding="20px"
         >
           <Typography
             fontWeight={550}
-            sx={{ fontSize: { md: 100, sm: 80, xs: 60 } }}
+            sx={{ fontSize: { md: 85, sm: 70, xs: 60 } }}
             color={"primary"}
             textAlign={"center"}
-            padding="30px"
           >
             {university.name}
           </Typography>
           <Typography
-            sx={{ fontSize: { md: 60, sm: 40, xs: 30 } }}
+            sx={{ fontSize: { md: 50, sm: 40, xs: 30 } }}
             textAlign={"center"}
             color="secondary"
           >
@@ -67,7 +67,7 @@ const UniversityPage = () => {
               ? `Overall: ${getMetricAverage(university.overallAverage)}`
               : "Overall: N/A"}
           </Typography>
-          <Grid container marginY="15px">
+          <Grid container marginY="30px">
             <Grid
               item
               xs={12}
