@@ -187,6 +187,9 @@ const ReviewPage = () => {
               borderRadius: "12px",
               backgroundColor: theme.palette.primary.light,
               color: "white",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
             icon={
               <CheckIcon
@@ -199,7 +202,7 @@ const ReviewPage = () => {
             }}
           >
             <Typography
-              sx={{ fontSize: { xs: "13px", sm: "16px", md: "17px" } }}
+              sx={{ fontSize: { xs: "15px", sm: "16px", md: "17px" } }}
               color="white"
             >
               Review for {singleUniversity?.name} submitted successfully!
