@@ -56,7 +56,7 @@ const HomePage = () => {
       >
         <Typography
           fontWeight={550}
-          sx={{ fontSize: { md: 100, sm: 80, xs: 60 } }}
+          sx={{ fontSize: { md: 100, sm: 80, xs: 60 }, paddingX: "10px" }}
           color={"primary"}
         >
           CollegeRanks
