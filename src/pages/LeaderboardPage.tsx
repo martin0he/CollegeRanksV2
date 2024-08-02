@@ -28,6 +28,11 @@ import { DegreeLevels, Majors } from "../utils/majors";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
+const countryOptions = Object.entries(CountryCodes).map(([label, value]) => ({
+  label,
+  value,
+}));
+
 const LeaderboardPage: React.FC = () => {
   const [size, setSize] = useState<number>(10);
   const [metric, setMetric] = useState<string>("overallAverage");
@@ -60,72 +65,91 @@ const LeaderboardPage: React.FC = () => {
   };
 
   const fetchUniversities = async () => {
-    let query = supabase
+    // fetch filtered reviews
+    let reviewsQuery = supabase.from("Reviews").select("universityId");
+
+    if (level) {
+      reviewsQuery = reviewsQuery.eq("degreeLevel", level);
+    }
+
+    if (degree) {
+      reviewsQuery = reviewsQuery.ilike("major", `%${degree}%`);
+    }
+
+    const { data: reviewsData, error: reviewsError } = await reviewsQuery;
+
+    if (reviewsError) {
+      console.error(reviewsError);
+      return;
+    }
+
+    const universityIds = reviewsData.map((review: any) => review.universityId);
+
+    // fetch universities based on filtered reviews
+    let universitiesQuery = supabase
       .from("Universities")
       .select("name, " + metric)
-      .eq("countryCode", country);
+      .in("id", universityIds);
 
-    if (country === CountryCodes.Global) {
-      query = supabase.from("Universities").select("name, " + metric);
+    if (country !== CountryCodes.Global) {
+      universitiesQuery = universitiesQuery.eq("countryCode", country);
     }
 
     const ascending = order === "Best";
-    query = query.order(metric, { ascending });
+    universitiesQuery = universitiesQuery.order(metric, { ascending });
 
-    const { data, error } = await query;
-    if (error) {
-      console.error(error);
-    } else {
-      const universityData = data.map((university: any) => {
-        const metricArray = university[metric as keyof University] as number[];
-        const average =
-          Array.isArray(metricArray) && metricArray.length > 0
-            ? metricArray.reduce((acc, val) => acc + val, 0) /
-              metricArray.length
-            : 0;
-        return {
-          name: university.name,
-          value: Number(average.toFixed(1)),
-        };
-      });
+    const { data: universitiesData, error: universitiesError } =
+      await universitiesQuery;
 
-      universityData.sort((a, b) =>
-        ascending ? a.value - b.value : b.value - a.value
-      );
-
-      const boundedData = ascending
-        ? universityData.slice(universityData.length - size)
-        : universityData.slice(0, size);
-
-      const labels = boundedData.map((u) => u.name);
-      const values = boundedData.map((u) => u.value);
-
-      setChartData({
-        labels,
-        datasets: [
-          {
-            label: `${orderNames[order]} ${size} Universities by ${metricNames[metric]} Rating`,
-            data: values,
-            backgroundColor: theme.palette.primary.light,
-            borderColor: theme.palette.primary.dark,
-            borderWidth: 1,
-            borderRadius: 7,
-          },
-        ],
-      });
+    if (universitiesError) {
+      console.error(universitiesError);
+      return;
     }
+
+    const universityData = universitiesData.map((university: any) => {
+      const metricArray = university[metric as keyof University] as number[];
+      const average =
+        Array.isArray(metricArray) && metricArray.length > 0
+          ? metricArray.reduce((acc, val) => acc + val, 0) / metricArray.length
+          : 0;
+      return {
+        name: university.name,
+        value: Number(average.toFixed(1)),
+      };
+    });
+
+    universityData.sort((a, b) =>
+      ascending ? a.value - b.value : b.value - a.value
+    );
+
+    const boundedData = ascending
+      ? universityData.slice(universityData.length - size)
+      : universityData.slice(0, size);
+
+    const labels = boundedData.map((u) => u.name);
+    const values = boundedData.map((u) => u.value);
+
+    setChartData({
+      labels,
+      datasets: [
+        {
+          label: `${orderNames[order]} ${size} Universities by ${metricNames[metric]} Rating`,
+          data: values,
+          backgroundColor: theme.palette.primary.light,
+          borderColor: theme.palette.primary.dark,
+          borderWidth: 1,
+          borderRadius: 7,
+        },
+      ],
+    });
   };
 
   useEffect(() => {
     fetchUniversities();
-  }, [size, metric, order, country, chartData]);
+  }, [size, metric, order, country, level, degree]);
 
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
   const isSm = useMediaQuery(theme.breakpoints.down("md"));
-  const countryOptions = Object.entries(CountryCodes).map(([label, value]) => ({
-    label,
-    value,
-  }));
 
   useEffect(() => {
     if (isXs) {
@@ -370,13 +394,13 @@ const LeaderboardPage: React.FC = () => {
             <Autocomplete
               id="combo-box-demo"
               options={countryOptions}
+              defaultValue={countryOptions[0] ?? ""}
               getOptionLabel={(option) => option.label}
               onChange={(_e, newValue) => {
                 setCountry(newValue?.value ?? "");
               }}
               renderInput={(params) => (
                 <TextField
-                  value={country}
                   {...params}
                   placeholder="Select Region"
                   sx={{
@@ -414,7 +438,6 @@ const LeaderboardPage: React.FC = () => {
               }}
               renderInput={(params) => (
                 <TextField
-                  value={degree}
                   {...params}
                   placeholder="Field of study"
                   sx={{
