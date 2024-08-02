@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Box,
@@ -114,7 +113,7 @@ const LeaderboardPage: React.FC = () => {
 
   useEffect(() => {
     fetchUniversities();
-  }, [size, metric, order, country]);
+  }, [size, metric, order, country, chartData]);
 
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
   const isSm = useMediaQuery(theme.breakpoints.down("md"));

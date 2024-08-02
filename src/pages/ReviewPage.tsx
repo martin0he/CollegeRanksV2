@@ -103,14 +103,22 @@ const ReviewPage = () => {
       major,
     };
 
-    const { error: insertError } = await supabase
+    const { data: insertedReview, error: insertError } = await supabase
       .from("Reviews")
-      .insert([reviewToSubmit]);
+      .insert([reviewToSubmit])
+      .select();
 
     if (insertError) {
       console.error("Error inserting review:", insertError);
       return;
     }
+
+    const insertedReviewId = insertedReview?.[0]?.id;
+    if (!insertedReviewId) {
+      console.error("Failed to retrieve the inserted review ID");
+      return;
+    }
+
     console.log("Review submitted successfully");
 
     const { data: university, error: fetchError } = await supabase
@@ -150,6 +158,9 @@ const ReviewPage = () => {
       overallAverage: university.overallAverage
         ? [...university.overallAverage, overall]
         : [overall],
+      reviewIds: university.reviewIds
+        ? [...university.reviewIds, insertedReviewId]
+        : [insertedReviewId],
     };
 
     const { error: updateError } = await supabase
