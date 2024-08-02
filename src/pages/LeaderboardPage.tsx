@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  Autocomplete,
   Box,
   FormControl,
   Grid,
   MenuItem,
   Select,
+  TextField,
   Typography,
   useMediaQuery,
   useTheme,
@@ -22,6 +24,7 @@ import { useEffect, useState } from "react";
 import { CountryCodes } from "../utils/countries";
 import { University } from "../utils/types";
 import supabase from "../utils/supabase";
+import { DegreeLevels, Majors } from "../utils/majors";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip);
 
@@ -30,6 +33,8 @@ const LeaderboardPage: React.FC = () => {
   const [metric, setMetric] = useState<string>("overallAverage");
   const [order, setOrder] = useState<string>("Best");
   const [country, setCountry] = useState<string>(CountryCodes.Global);
+  const [level, setLevel] = useState<string>(DegreeLevels[0]);
+  const [degree, setDegree] = useState<string>("");
   const [chartData, setChartData] = useState<ChartData<"bar">>({
     labels: [],
     datasets: [],
@@ -117,6 +122,10 @@ const LeaderboardPage: React.FC = () => {
 
   const isXs = useMediaQuery(theme.breakpoints.down("sm"));
   const isSm = useMediaQuery(theme.breakpoints.down("md"));
+  const countryOptions = Object.entries(CountryCodes).map(([label, value]) => ({
+    label,
+    value,
+  }));
 
   useEffect(() => {
     if (isXs) {
@@ -322,13 +331,13 @@ const LeaderboardPage: React.FC = () => {
               width: { md: "100%", sm: "80%", xs: "65%" },
             }}
           >
-            <Typography>Country:</Typography>
+            <Typography>Level:</Typography>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={country}
-              label="Country"
-              onChange={(e) => setCountry(e.target.value)}
+              value={level}
+              label="Level"
+              onChange={(e) => setLevel(e.target.value)}
               sx={{
                 borderRadius: "10px 10px 3px 3px",
                 backgroundColor: "#F9F4F4",
@@ -343,12 +352,85 @@ const LeaderboardPage: React.FC = () => {
                 },
               }}
             >
-              {Object.entries(CountryCodes).map(([key, value]) => (
-                <MenuItem key={value} value={value}>
-                  {key}
+              {DegreeLevels.map((level, index) => (
+                <MenuItem key={index} value={level}>
+                  {level}
                 </MenuItem>
               ))}
             </Select>
+          </FormControl>
+
+          <FormControl
+            sx={{
+              marginTop: "10px",
+              width: { md: "100%", sm: "80%", xs: "65%" },
+            }}
+          >
+            <Typography>Country:</Typography>
+            <Autocomplete
+              id="combo-box-demo"
+              options={countryOptions}
+              getOptionLabel={(option) => option.label}
+              onChange={(_e, newValue) => {
+                setCountry(newValue?.value ?? "");
+              }}
+              renderInput={(params) => (
+                <TextField
+                  value={country}
+                  {...params}
+                  placeholder="Select Region"
+                  sx={{
+                    borderRadius: "10px 10px 3px 3px",
+                    backgroundColor: "#F9F4F4",
+                    height: "45px",
+                    border: "none",
+                    paddingBottom: "10px",
+                    boxShadow: "-1px 1px 2px #7a7171",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      border: "none",
+                    },
+                  }}
+                />
+              )}
+            />
+          </FormControl>
+
+          <FormControl
+            sx={{
+              marginTop: "10px",
+              width: { md: "100%", sm: "80%", xs: "65%" },
+            }}
+          >
+            <Typography>Degree:</Typography>
+            <Autocomplete
+              id="combo-box-demo"
+              options={Majors}
+              getOptionLabel={(option: string) => option}
+              onInputChange={(_e, newInputValue) => {
+                setDegree(newInputValue);
+              }}
+              onChange={(_e, newValue) => {
+                setDegree(newValue ?? "");
+              }}
+              renderInput={(params) => (
+                <TextField
+                  value={degree}
+                  {...params}
+                  placeholder="Field of study"
+                  sx={{
+                    borderRadius: "10px 10px 3px 3px",
+                    backgroundColor: "#F9F4F4",
+                    height: "45px",
+                    border: "none",
+                    paddingBottom: "10px",
+                    boxShadow: "-1px 1px 2px #7a7171",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      border: "none",
+                    },
+                  }}
+                />
+              )}
+            />
           </FormControl>
         </Grid>
       </Grid>
