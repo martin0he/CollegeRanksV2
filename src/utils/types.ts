@@ -27,4 +27,6 @@ export type Review = {
   opportunities: number;
   safety: number;
   overall: number;
+  degreeLevel: string;
+  major: string;
 };

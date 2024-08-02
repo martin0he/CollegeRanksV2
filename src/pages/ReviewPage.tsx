@@ -19,6 +19,7 @@ import useWindowDimensions from "../utils/useWindowDimensions";
 import { useAuth } from "../utils/AuthProvider";
 import CheckIcon from "@mui/icons-material/Check";
 import { isMobile } from "react-device-detect";
+import { DegreeLevels, Majors } from "../utils/majors";
 
 const ReviewPage = () => {
   const [inputValue, setInputValue] = useState("");
@@ -33,6 +34,8 @@ const ReviewPage = () => {
   const [opportunities, setOpportunities] = useState<number>(50);
   const [safety, setSafety] = useState<number>(50);
   const [overall, setOverall] = useState<number>(0);
+  const [degreeLevel, setDegreeLevel] = useState<string>("");
+  const [major, setMajor] = useState<string>("");
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [singleUniversity, setSingleUniversity] = useState<University>();
 
@@ -96,6 +99,8 @@ const ReviewPage = () => {
       overall,
       universityId,
       createdAt: new Date(),
+      degreeLevel,
+      major,
     };
 
     const { error: insertError } = await supabase
@@ -230,7 +235,7 @@ const ReviewPage = () => {
           width="fit-content"
         >
           <Autocomplete
-            sx={{ paddingLeft: "15px" }}
+            sx={{ paddingLeft: { md: "15px", sm: "0px" } }}
             id="combo-box-demo"
             options={universities}
             getOptionLabel={(option: University) =>
@@ -259,10 +264,81 @@ const ReviewPage = () => {
                     xs: 0.69 * width,
                   },
                   height: "fit-content",
-                  marginY: 2,
+                  marginTop: 2,
+                  marginBottom: 1.2,
                 }}
                 {...params}
                 placeholder="Select your institution"
+              />
+            )}
+          />
+
+          <Autocomplete
+            sx={{ paddingLeft: { md: "15px", sm: "0px" } }}
+            id="combo-box-demo"
+            options={DegreeLevels}
+            getOptionLabel={(option: string) => option}
+            onInputChange={(_e, newInputValue) => {
+              setInputValue(newInputValue);
+            }}
+            onChange={(_e, newValue) => {
+              setDegreeLevel(newValue ?? "");
+            }}
+            renderInput={(params) => (
+              <TextField
+                sx={{
+                  "& .MuiInputBase-root": {
+                    borderRadius: "35px",
+                    backgroundColor: "#F9F4F4",
+                    height: "45px",
+                    boxShadow: "-1px 2px 1px #7a7171",
+                    fontSize: "18px",
+                  },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
+                  height: "fit-content",
+                  marginY: 1.2,
+                }}
+                {...params}
+                placeholder="Degree level"
+              />
+            )}
+          />
+
+          <Autocomplete
+            sx={{ paddingLeft: { md: "15px", sm: "0px" } }}
+            id="combo-box-demo"
+            options={Majors}
+            getOptionLabel={(option: string) => option}
+            onInputChange={(_e, newInputValue) => {
+              setInputValue(newInputValue);
+            }}
+            onChange={(_e, newValue) => {
+              setMajor(newValue ?? "");
+            }}
+            renderInput={(params) => (
+              <TextField
+                sx={{
+                  "& .MuiInputBase-root": {
+                    borderRadius: "35px",
+                    backgroundColor: "#F9F4F4",
+                    height: "45px",
+                    boxShadow: "-1px 2px 1px #7a7171",
+                    fontSize: "18px",
+                  },
+                  width: {
+                    md: 0.4 * width,
+                    sm: 0.63 * width,
+                    xs: 0.69 * width,
+                  },
+                  height: "fit-content",
+                  marginY: 1.2,
+                }}
+                {...params}
+                placeholder="Field of study"
               />
             )}
           />
@@ -274,7 +350,7 @@ const ReviewPage = () => {
             paddingRight="25px"
             paddingLeft="15px"
             sx={{
-              maxHeight: { md: "64vh", sm: "100%", xs: "100%" },
+              maxHeight: { md: "48vh", sm: "100%", xs: "100%" },
               "::-webkit-scrollbar": {
                 width: "8px",
                 borderRadius: "10px",
