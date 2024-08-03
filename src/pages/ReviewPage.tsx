@@ -712,7 +712,7 @@ const ReviewPage = () => {
             {" "}
             <Button
               onClick={() => {
-                user ? handleSubmit : setRedirectModalOpen(true);
+                user ? { handleSubmit } : setRedirectModalOpen(true);
               }}
               disabled={!inputValue || !degreeLevel || !major}
               sx={{
