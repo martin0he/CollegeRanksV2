@@ -66,7 +66,7 @@ const LeaderboardPage: React.FC = () => {
 
   const fetchUniversities = async () => {
     try {
-      // Fetch filtered reviews
+      // fetch filtered reviews
       let reviewsQuery = supabase.from("Reviews").select("*");
 
       if (level) {
@@ -89,10 +89,10 @@ const LeaderboardPage: React.FC = () => {
         new Set(filteredReviews.map((review) => review.universityId))
       );
 
-      // Fetch filtered universities
+      // fetch universities based on filtered reviews
       let filteredUniversitiesQuery = supabase
         .from("Universities")
-        .select("id, name, countryCode")
+        .select(`id, name, countryCode, ${metric}`)
         .in("id", unisFromFilteredReviews);
 
       if (country !== CountryCodes.Global) {
@@ -112,61 +112,45 @@ const LeaderboardPage: React.FC = () => {
         return;
       }
 
-      // Calculate average values for each metric
-      const universityMetrics: {
-        [key: string]: { [metric: string]: number[] };
-      } = {};
+      // define the new mapping from University metrics to Review fields cus of the different names
+      const metricMapping: { [key: string]: keyof Review } = {
+        overallAverage: "overall",
+        avgAcademics: "academics",
+        avgHousing: "housing",
+        avgLocation: "location",
+        avgClubs: "clubs",
+        avgFood: "food",
+        avgSocial: "social",
+        avgOpportunities: "opportunities",
+        avgSafety: "safety",
+      };
+
+      // calculate average values for the selected metric based on reviews
+      const universityMetrics: { [key: string]: number[] } = {};
+      const reviewMetricKey = metricMapping[metric];
 
       filteredReviews.forEach((review: Review) => {
         const universityId = review.universityId;
         if (!universityMetrics[universityId]) {
-          universityMetrics[universityId] = {
-            academics: [],
-            housing: [],
-            location: [],
-            clubs: [],
-            food: [],
-            social: [],
-            opportunities: [],
-            safety: [],
-            overall: [],
-          };
+          universityMetrics[universityId] = [];
         }
-        universityMetrics[universityId].academics.push(review.academics);
-        universityMetrics[universityId].housing.push(review.housing);
-        universityMetrics[universityId].location.push(review.location);
-        universityMetrics[universityId].clubs.push(review.clubs);
-        universityMetrics[universityId].food.push(review.food);
-        universityMetrics[universityId].social.push(review.social);
-        universityMetrics[universityId].opportunities.push(
-          review.opportunities
-        );
-        universityMetrics[universityId].safety.push(review.safety);
-        universityMetrics[universityId].overall.push(review.overall);
+        universityMetrics[universityId].push(review[reviewMetricKey] as number);
       });
 
       const universityAverages = Object.entries(universityMetrics).map(
-        ([universityId, metrics]) => {
+        ([universityId, values]) => {
           const calculateAverage = (arr: number[]): number =>
             arr.length > 0
               ? arr.reduce((acc, val) => acc + val, 0) / arr.length
               : 0;
           return {
             universityId,
-            academics: calculateAverage(metrics.academics),
-            housing: calculateAverage(metrics.housing),
-            location: calculateAverage(metrics.location),
-            clubs: calculateAverage(metrics.clubs),
-            food: calculateAverage(metrics.food),
-            social: calculateAverage(metrics.social),
-            opportunities: calculateAverage(metrics.opportunities),
-            safety: calculateAverage(metrics.safety),
-            overall: calculateAverage(metrics.overall),
+            average: calculateAverage(values),
           };
         }
       );
 
-      // Map calculated averages to universities
+      // map calculated averages to universities
       const universityData = filteredUniversitiesData
         .map((university: any) => {
           const match = universityAverages.find(
@@ -175,24 +159,16 @@ const LeaderboardPage: React.FC = () => {
           return match
             ? {
                 name: university.name,
-                academics: match.academics,
-                housing: match.housing,
-                location: match.location,
-                clubs: match.clubs,
-                food: match.food,
-                social: match.social,
-                opportunities: match.opportunities,
-                safety: match.safety,
-                overall: match.overall,
+                value: match.average,
               }
             : null;
         })
         .filter((u) => u !== null);
 
-      // Sort and limit the data
+      // sort and limit the data
       const ascending = order === "Best";
       universityData.sort((a, b) =>
-        ascending ? a!.overall - b!.overall : b!.overall - a!.overall
+        ascending ? a!.value - b!.value : b!.value - a!.value
       );
 
       const boundedData = ascending
@@ -200,7 +176,7 @@ const LeaderboardPage: React.FC = () => {
         : universityData.slice(0, size);
 
       const labels = boundedData.map((u) => u!.name);
-      const values = boundedData.map((u) => u!.overall);
+      const values = boundedData.map((u) => u!.value);
 
       setChartData({
         labels,
