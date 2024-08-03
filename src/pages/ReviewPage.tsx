@@ -686,13 +686,38 @@ const ReviewPage = () => {
                 onChange={(_e, newValue) => setSafety(newValue as number)}
               />
             </Box>
-
+          </Box>
+        </Grid>
+        <Grid
+          container
+          item
+          md={6}
+          sm={12}
+          xs={12}
+          sx={{ paddingLeft: { lg: "0px", md: "10px" } }}
+        >
+          <Grid
+            item
+            md={6}
+            sm={12}
+            xs={12}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: { md: "flex-end", sm: "center", xs: "center" },
+              alignItems: { md: "flex-start", sm: "center", xs: "center" },
+            }}
+            width="fit-content"
+          >
+            {" "}
             <Button
               onClick={() => {
                 user ? handleSubmit : setRedirectModalOpen(true);
               }}
+              disabled={!inputValue || !degreeLevel || !major}
               sx={{
-                marginY: "10px",
+                marginBottom: "15px",
+
                 textTransform: "none",
                 fontSize: "18px",
                 borderRadius: "8px",
@@ -705,39 +730,45 @@ const ReviewPage = () => {
             >
               submit
             </Button>
-          </Box>
-        </Grid>
-        <Grid
-          item
-          md={6}
-          sm={12}
-          xs={12}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: { md: "flex-end", sm: "center", xs: "center" },
-            alignItems: { md: "flex-end", sm: "center", xs: "center" },
-          }}
-          width="fit-content"
-        >
-          <Box display="flex" alignItems="center">
-            <Box
-              display="flex"
-              flexDirection="column"
-              alignItems="flex-end"
-              marginTop="18px"
-            >
-              <Typography fontSize={18} fontWeight={500}>
-                Overall
-              </Typography>
-              <Typography fontSize={18} fontWeight={500}>
-                Score
+          </Grid>
+          <Grid
+            item
+            md={6}
+            sm={12}
+            xs={12}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: { md: "flex-end", sm: "center", xs: "center" },
+              alignItems: { md: "flex-end", sm: "center", xs: "center" },
+            }}
+            width="fit-content"
+            height="wrap-content"
+          >
+            <Box display="flex" alignItems="center">
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="flex-end"
+                marginTop="27px"
+              >
+                <Typography fontSize={18} fontWeight={500}>
+                  Overall
+                </Typography>
+                <Typography fontSize={18} fontWeight={500}>
+                  Score
+                </Typography>
+              </Box>
+              <Typography
+                lineHeight={1.15}
+                fontSize={105}
+                fontWeight={650}
+                sx={{ ml: 1 }}
+              >
+                {overall.toFixed(1)}
               </Typography>
             </Box>
-            <Typography fontSize={105} fontWeight={650} sx={{ ml: 1 }}>
-              {overall.toFixed(1)}
-            </Typography>
-          </Box>
+          </Grid>
         </Grid>
       </Grid>
       <RedirectModal
