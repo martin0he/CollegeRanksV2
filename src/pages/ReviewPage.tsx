@@ -20,6 +20,7 @@ import { useAuth } from "../utils/AuthProvider";
 import CheckIcon from "@mui/icons-material/Check";
 import { isMobile } from "react-device-detect";
 import { DegreeLevels, Majors } from "../utils/majors";
+import RedirectModal from "../components/RedirctModal";
 
 const ReviewPage = () => {
   const [inputValue, setInputValue] = useState("");
@@ -38,6 +39,7 @@ const ReviewPage = () => {
   const [major, setMajor] = useState<string>("");
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [singleUniversity, setSingleUniversity] = useState<University>();
+  const [redirectModalOpen, setRedirectModalOpen] = useState<boolean>(false);
 
   const theme = useTheme();
   const { width } = useWindowDimensions();
@@ -686,8 +688,9 @@ const ReviewPage = () => {
             </Box>
 
             <Button
-              onClick={handleSubmit}
-              disabled={!user}
+              onClick={() => {
+                user ? handleSubmit : setRedirectModalOpen(true);
+              }}
               sx={{
                 marginY: "10px",
                 textTransform: "none",
@@ -737,6 +740,10 @@ const ReviewPage = () => {
           </Box>
         </Grid>
       </Grid>
+      <RedirectModal
+        open={redirectModalOpen}
+        onClose={() => setRedirectModalOpen(false)}
+      />
     </Box>
   );
 };
