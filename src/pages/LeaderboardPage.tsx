@@ -22,7 +22,7 @@ import {
 } from "chart.js";
 import { useEffect, useState } from "react";
 import { CountryCodes } from "../utils/countries";
-import { University } from "../utils/types";
+import { Review } from "../utils/types";
 import supabase from "../utils/supabase";
 import { DegreeLevels, Majors } from "../utils/majors";
 
@@ -65,83 +65,159 @@ const LeaderboardPage: React.FC = () => {
   };
 
   const fetchUniversities = async () => {
-    // fetch filtered reviews
-    let reviewsQuery = supabase.from("Reviews").select("universityId");
+    try {
+      // Fetch filtered reviews
+      let reviewsQuery = supabase.from("Reviews").select("*");
 
-    if (level) {
-      reviewsQuery = reviewsQuery.eq("degreeLevel", level);
+      if (level) {
+        reviewsQuery = reviewsQuery.eq("degreeLevel", level);
+      }
+
+      if (degree) {
+        reviewsQuery = reviewsQuery.ilike("major", `%${degree}%`);
+      }
+
+      const { data: reviewsData, error: reviewsError } = await reviewsQuery;
+
+      if (reviewsError) {
+        console.error(reviewsError);
+        return;
+      }
+
+      const filteredReviews = reviewsData as Review[];
+      const unisFromFilteredReviews = Array.from(
+        new Set(filteredReviews.map((review) => review.universityId))
+      );
+
+      // Fetch filtered universities
+      let filteredUniversitiesQuery = supabase
+        .from("Universities")
+        .select("id, name, countryCode")
+        .in("id", unisFromFilteredReviews);
+
+      if (country !== CountryCodes.Global) {
+        filteredUniversitiesQuery = filteredUniversitiesQuery.eq(
+          "countryCode",
+          country
+        );
+      }
+
+      const {
+        data: filteredUniversitiesData,
+        error: filteredUniversitiesError,
+      } = await filteredUniversitiesQuery;
+
+      if (filteredUniversitiesError) {
+        console.error(filteredUniversitiesError);
+        return;
+      }
+
+      // Calculate average values for each metric
+      const universityMetrics: {
+        [key: string]: { [metric: string]: number[] };
+      } = {};
+
+      filteredReviews.forEach((review: Review) => {
+        const universityId = review.universityId;
+        if (!universityMetrics[universityId]) {
+          universityMetrics[universityId] = {
+            academics: [],
+            housing: [],
+            location: [],
+            clubs: [],
+            food: [],
+            social: [],
+            opportunities: [],
+            safety: [],
+            overall: [],
+          };
+        }
+        universityMetrics[universityId].academics.push(review.academics);
+        universityMetrics[universityId].housing.push(review.housing);
+        universityMetrics[universityId].location.push(review.location);
+        universityMetrics[universityId].clubs.push(review.clubs);
+        universityMetrics[universityId].food.push(review.food);
+        universityMetrics[universityId].social.push(review.social);
+        universityMetrics[universityId].opportunities.push(
+          review.opportunities
+        );
+        universityMetrics[universityId].safety.push(review.safety);
+        universityMetrics[universityId].overall.push(review.overall);
+      });
+
+      const universityAverages = Object.entries(universityMetrics).map(
+        ([universityId, metrics]) => {
+          const calculateAverage = (arr: number[]): number =>
+            arr.length > 0
+              ? arr.reduce((acc, val) => acc + val, 0) / arr.length
+              : 0;
+          return {
+            universityId,
+            academics: calculateAverage(metrics.academics),
+            housing: calculateAverage(metrics.housing),
+            location: calculateAverage(metrics.location),
+            clubs: calculateAverage(metrics.clubs),
+            food: calculateAverage(metrics.food),
+            social: calculateAverage(metrics.social),
+            opportunities: calculateAverage(metrics.opportunities),
+            safety: calculateAverage(metrics.safety),
+            overall: calculateAverage(metrics.overall),
+          };
+        }
+      );
+
+      // Map calculated averages to universities
+      const universityData = filteredUniversitiesData
+        .map((university: any) => {
+          const match = universityAverages.find(
+            (u) => u.universityId === university.id
+          );
+          return match
+            ? {
+                name: university.name,
+                academics: match.academics,
+                housing: match.housing,
+                location: match.location,
+                clubs: match.clubs,
+                food: match.food,
+                social: match.social,
+                opportunities: match.opportunities,
+                safety: match.safety,
+                overall: match.overall,
+              }
+            : null;
+        })
+        .filter((u) => u !== null);
+
+      // Sort and limit the data
+      const ascending = order === "Best";
+      universityData.sort((a, b) =>
+        ascending ? a!.overall - b!.overall : b!.overall - a!.overall
+      );
+
+      const boundedData = ascending
+        ? universityData.slice(universityData.length - size)
+        : universityData.slice(0, size);
+
+      const labels = boundedData.map((u) => u!.name);
+      const values = boundedData.map((u) => u!.overall);
+
+      setChartData({
+        labels,
+        datasets: [
+          {
+            label: `${orderNames[order]} ${size} Universities by ${metricNames[metric]} Rating`,
+            data: values,
+            backgroundColor: theme.palette.primary.light,
+            borderColor: theme.palette.primary.dark,
+            borderWidth: 1,
+            borderRadius: 7,
+          },
+        ],
+      });
+    } catch (error) {
+      console.error("Error fetching universities: ", error);
     }
-
-    if (degree) {
-      reviewsQuery = reviewsQuery.ilike("major", `%${degree}%`);
-    }
-
-    const { data: reviewsData, error: reviewsError } = await reviewsQuery;
-
-    if (reviewsError) {
-      console.error(reviewsError);
-      return;
-    }
-
-    const universityIds = reviewsData.map((review: any) => review.universityId);
-
-    // fetch universities based on filtered reviews
-    let universitiesQuery = supabase
-      .from("Universities")
-      .select("name, " + metric)
-      .in("id", universityIds);
-
-    if (country !== CountryCodes.Global) {
-      universitiesQuery = universitiesQuery.eq("countryCode", country);
-    }
-
-    const ascending = order === "Best";
-    universitiesQuery = universitiesQuery.order(metric, { ascending });
-
-    const { data: universitiesData, error: universitiesError } =
-      await universitiesQuery;
-
-    if (universitiesError) {
-      console.error(universitiesError);
-      return;
-    }
-
-    const universityData = universitiesData.map((university: any) => {
-      const metricArray = university[metric as keyof University] as number[];
-      const average =
-        Array.isArray(metricArray) && metricArray.length > 0
-          ? metricArray.reduce((acc, val) => acc + val, 0) / metricArray.length
-          : 0;
-      return {
-        name: university.name,
-        value: Number(average.toFixed(1)),
-      };
-    });
-
-    universityData.sort((a, b) =>
-      ascending ? a.value - b.value : b.value - a.value
-    );
-
-    const boundedData = ascending
-      ? universityData.slice(universityData.length - size)
-      : universityData.slice(0, size);
-
-    const labels = boundedData.map((u) => u.name);
-    const values = boundedData.map((u) => u.value);
-
-    setChartData({
-      labels,
-      datasets: [
-        {
-          label: `${orderNames[order]} ${size} Universities by ${metricNames[metric]} Rating`,
-          data: values,
-          backgroundColor: theme.palette.primary.light,
-          borderColor: theme.palette.primary.dark,
-          borderWidth: 1,
-          borderRadius: 7,
-        },
-      ],
-    });
   };
 
   useEffect(() => {
