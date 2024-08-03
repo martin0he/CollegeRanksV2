@@ -112,7 +112,7 @@ const LeaderboardPage: React.FC = () => {
         return;
       }
 
-      // define the new mapping from University metrics to Review fields cus of the different names
+      // mapping from University metrics to Review fields because the field names are different
       const metricMapping: { [key: string]: keyof Review } = {
         overallAverage: "overall",
         avgAcademics: "academics",
@@ -161,19 +161,52 @@ const LeaderboardPage: React.FC = () => {
                 name: university.name,
                 value: match.average,
               }
-            : null;
+            : {
+                name: university.name,
+                value: null,
+              };
         })
         .filter((u) => u !== null);
 
-      // sort and limit the data
+      // sort the data based on the selected order
       const ascending = order === "Best";
       universityData.sort((a, b) =>
-        ascending ? a!.value - b!.value : b!.value - a!.value
+        ascending
+          ? (a!.value ?? 0) - (b!.value ?? 0)
+          : (b!.value ?? 0) - (a!.value ?? 0)
       );
 
-      const boundedData = ascending
-        ? universityData.slice(universityData.length - size)
-        : universityData.slice(0, size);
+      // limit the data to the top or bottom `size` universities
+      const boundedData = universityData.slice(-size);
+
+      // if total data entries are fewer than selected number of schools, add random universities
+      if (boundedData.length < size) {
+        const additionalUniversitiesQuery = supabase
+          .from("Universities")
+          .select("id, name")
+          .not("id", "in", `(${unisFromFilteredReviews.join(",")})`)
+          .limit(size - boundedData.length);
+
+        const {
+          data: additionalUniversitiesData,
+          error: additionalUniversitiesError,
+        } = await additionalUniversitiesQuery;
+
+        if (additionalUniversitiesError) {
+          console.error(additionalUniversitiesError);
+          return;
+        }
+
+        const additionalUniversities = additionalUniversitiesData.map(
+          (university: any) => ({
+            name: university.name,
+            value: null,
+          })
+        );
+
+        // add additional universities to the end of the array
+        boundedData.unshift(...additionalUniversities);
+      }
 
       const labels = boundedData.map((u) => u!.name);
       const values = boundedData.map((u) => u!.value);
