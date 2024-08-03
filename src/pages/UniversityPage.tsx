@@ -2,11 +2,19 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { University } from "../utils/types";
 import supabase from "../utils/supabase";
-import { Box, CircularProgress, Grid, Typography } from "@mui/material";
+import { Box, CircularProgress, Tab, Tabs, Typography } from "@mui/material";
+import { TabPanel } from "../components/TabPanel";
+import TabContent from "../components/TabContent";
+import { a11yProps } from "../components/A11yProps";
 
 const UniversityPage = () => {
   const { id } = useParams();
   const [university, setUniversity] = useState<University>();
+  const [tabValue, setTabValue] = useState<number>(0);
+
+  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
 
   useEffect(() => {
     const fetchUniversityData = async () => {
@@ -27,124 +35,81 @@ const UniversityPage = () => {
     }
   }, [id]);
 
-  const getMetricAverage = (values: number[]) => {
-    return (
-      values.reduce((acc, curr) => acc + curr, 0) / values.length
-    ).toFixed(1);
-  };
-
   return (
     <Box
       display="flex"
       justifyContent="center"
       alignItems="flex-start"
       width="100vw"
-      height="100%"
+      height="calc(100vh - 85px)"
+      sx={{
+        position: "absolute",
+        bottom: 0,
+      }}
     >
       {university ? (
         <Box
-          marginTop="60px"
+          marginTop="20px"
           display="flex"
-          flexDirection={"column"}
+          flexDirection="column"
           justifyContent="center"
           alignItems="center"
           padding="10px"
         >
           <Typography
             fontWeight={550}
-            sx={{ fontSize: { md: 85, sm: 70, xs: 60 } }}
+            sx={{ fontSize: { md: 67, sm: 50, xs: 35 } }}
             color={"primary"}
             textAlign={"center"}
           >
             {university.name}
           </Typography>
-          <Typography
-            sx={{ fontSize: { md: 34, sm: 27, xs: 24 } }}
-            textAlign={"center"}
-            color="secondary"
-          >
-            {university.overallAverage
-              ? `${
-                  university.overallAverage.length > 1
-                    ? `${university.overallAverage.length} reviews`
-                    : `${university.overallAverage.length} review`
-                }`
-              : "No reviews"}
-          </Typography>
-          <Typography
-            sx={{ fontSize: { md: 50, sm: 40, xs: 30 } }}
-            textAlign={"center"}
-            color="secondary"
-          >
-            {university.overallAverage
-              ? `Overall: ${getMetricAverage(university.overallAverage)}`
-              : "Overall: N/A"}
-          </Typography>
 
-          <Grid container marginY="30px">
-            <Grid
-              item
-              xs={12}
-              md={6}
-              display="flex"
-              flexDirection={"column"}
-              justifyContent="center"
-              alignItems="center"
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            width="fit-content"
+            sx={{
+              marginTop: "15px",
+              borderBottom: 1,
+              borderColor: "divider",
+              overflow: "hidden",
+            }}
+          >
+            <Tabs
+              value={tabValue}
+              onChange={handleChange}
+              aria-label="degree label tabs"
+              sx={{ width: "fit-content" }}
             >
-              <Typography>
-                {university.avgAcademics
-                  ? `Academics: ${getMetricAverage(university.avgAcademics)}`
-                  : "Academics: N/A"}
-              </Typography>
-              <Typography>
-                {university.avgHousing
-                  ? `Housing: ${getMetricAverage(university.avgHousing)}`
-                  : "Housing: N/A"}
-              </Typography>
-              <Typography>
-                {university.avgLocation
-                  ? `Location: ${getMetricAverage(university.avgLocation)}`
-                  : "Location: N/A"}
-              </Typography>
-              <Typography>
-                {university.avgClubs
-                  ? `Clubs: ${getMetricAverage(university.avgClubs)}`
-                  : "Clubs: N/A"}
-              </Typography>
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              md={6}
-              display="flex"
-              flexDirection={"column"}
-              justifyContent="center"
-              alignItems="center"
-            >
-              <Typography>
-                {university.avgFood
-                  ? `Dining: ${getMetricAverage(university.avgFood)}`
-                  : "Dining: N/A"}
-              </Typography>
-              <Typography>
-                {university.avgSocial
-                  ? `Social: ${getMetricAverage(university.avgSocial)}`
-                  : "Social: N/A"}
-              </Typography>
-              <Typography>
-                {university.avgOpportunities
-                  ? `Opportunities: ${getMetricAverage(
-                      university.avgOpportunities
-                    )}`
-                  : "Opportunities: N/A"}
-              </Typography>
-              <Typography>
-                {university.avgSafety
-                  ? `Safety: ${getMetricAverage(university.avgSafety)}`
-                  : "Safety: N/A"}
-              </Typography>
-            </Grid>
-          </Grid>
+              <Tab
+                sx={{ fontSize: { md: "16px", sm: "14.5px", xs: "13px" } }}
+                label="Undergraduate"
+                {...a11yProps(0)}
+              />
+              <Tab
+                sx={{ fontSize: { md: "16px", sm: "14.5px", xs: "13px" } }}
+                label="Graduate"
+                {...a11yProps(1)}
+              />
+              <Tab
+                sx={{ fontSize: { md: "16px", sm: "14.5px", xs: "13px" } }}
+                label="Doctorate"
+                {...a11yProps(2)}
+              />
+            </Tabs>
+          </Box>
+          <TabPanel value={tabValue} index={0}>
+            <TabContent degreeLevel="Undergraduate" university={university} />
+          </TabPanel>
+          <TabPanel value={tabValue} index={1}>
+            <TabContent degreeLevel="Graduate" university={university} />
+          </TabPanel>
+          <TabPanel value={tabValue} index={2}>
+            <TabContent degreeLevel="Doctorate" university={university} />
+          </TabPanel>
         </Box>
       ) : (
         <CircularProgress color="primary" />
