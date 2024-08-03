@@ -89,6 +89,12 @@ const ReviewPage = () => {
       return;
     }
 
+    if (!user) {
+      console.error("No user found");
+      setRedirectModalOpen(true);
+      return;
+    }
+
     const reviewToSubmit: Review = {
       academics,
       clubs,
@@ -709,15 +715,11 @@ const ReviewPage = () => {
             }}
             width="fit-content"
           >
-            {" "}
             <Button
-              onClick={() => {
-                user ? { handleSubmit } : setRedirectModalOpen(true);
-              }}
+              onClick={() => handleSubmit()}
               disabled={!inputValue || !degreeLevel || !major}
               sx={{
                 marginBottom: "15px",
-
                 textTransform: "none",
                 fontSize: "18px",
                 borderRadius: "8px",
