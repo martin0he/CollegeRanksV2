@@ -22,44 +22,46 @@ const Navbar = () => {
 
   return (
     <>
-      <Drawer
-        anchor="right"
-        open={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-      >
-        <Box
-          sx={{
-            width: 250,
-            height: "100%",
-            backgroundColor: theme.palette.background.default,
-            boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.2)",
-          }}
-          role="presentation"
-          onClick={() => setIsMenuOpen(false)}
+      {isSmallScreen && (
+        <Drawer
+          anchor="right"
+          open={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
         >
-          <List>
-            <ListItem disablePadding>
-              <Link href="/" sx={{ textDecoration: "none", width: "100%" }}>
-                <ListItemButton>
-                  <ListItemText primary="home" />
-                </ListItemButton>
-              </Link>
-            </ListItem>
-            {["leaderboard", "review", "account"].map((text) => (
-              <ListItem key={text} disablePadding>
-                <Link
-                  href={`/${text}`}
-                  sx={{ textDecoration: "none", width: "100%" }}
-                >
+          <Box
+            sx={{
+              width: 250,
+              height: "100%",
+              backgroundColor: theme.palette.background.default,
+              boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.2)",
+            }}
+            role="presentation"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <List>
+              <ListItem disablePadding>
+                <Link href="/" sx={{ textDecoration: "none", width: "100%" }}>
                   <ListItemButton>
-                    <ListItemText primary={text} />
+                    <ListItemText primary="home" />
                   </ListItemButton>
                 </Link>
               </ListItem>
-            ))}
-          </List>
-        </Box>
-      </Drawer>
+              {["leaderboard", "review", "account"].map((text) => (
+                <ListItem key={text} disablePadding>
+                  <Link
+                    href={`/${text}`}
+                    sx={{ textDecoration: "none", width: "100%" }}
+                  >
+                    <ListItemButton>
+                      <ListItemText primary={text} />
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </Drawer>
+      )}
       {isSmallScreen ? (
         <Box
           display="flex"
