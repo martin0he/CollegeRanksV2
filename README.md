@@ -29,7 +29,7 @@ Users can filter the leaderboard by country, order (best/worst), selection size,
 
 ## Live
 
-https://college-ranks-v2.vercel.app/
+https://thecollegeranks.com
 
 ## Style Reference
 
